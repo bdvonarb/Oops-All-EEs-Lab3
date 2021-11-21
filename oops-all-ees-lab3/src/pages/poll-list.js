@@ -2,12 +2,13 @@ import * as React from 'react'
 import PollTableRow from '../components/poll-table-row'
 import "../styles/bootstrap.min.css"
 import '../styles/fa/css/all.css'
+import {Link} from 'gatsby'
 
 
 class PollListPage extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {polls:[]}
+        this.state = {polls:[],nextID:0}
 
         this.newPoll = this.newPoll.bind(this);
         this.deletePoll = this.deletePoll.bind(this);
@@ -15,7 +16,8 @@ class PollListPage extends React.Component {
 
     newPoll () {
         this.setState(prevState => ({
-            polls: [...prevState.polls, {"id":prevState.polls.length,"title":"poll"+prevState.polls.length,"author":"me"}]
+            polls: [...prevState.polls, {"id":prevState.nextID,"title":"poll"+prevState.nextID,"author":"me"}],
+            nextID: prevState.nextID+1
         }))
     }
 
@@ -30,6 +32,7 @@ class PollListPage extends React.Component {
         return (
             <main>
                 <title>Oops All EEs Lab 3</title>
+                
                 <table className="table table-striped">
                     <thead>
                         <tr>
