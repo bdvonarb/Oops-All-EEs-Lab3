@@ -11,12 +11,12 @@ const PollTableRow = ({ pollTitle, pollAuthor, pollID, signedin, deleteCallback,
                     <i className="far fa-eye"></i>
                 </button>
                 {signedin === "true" && <>
-                <button type="button" className="btn btn-success" style={{marginLeft:'5px'}}>
-                    <i className="far fa-edit"></i>
-                </button>
-                <button type="button" onClick={ () => deleteCallback(pollID)} className="btn btn-danger" style={{marginLeft:'5px'}}>
-                    <i className="far fa-trash-alt"></i>
-                </button>
+                    <button type="button" className="btn btn-success" style={{marginLeft:'5px'}}>
+                        <i className="far fa-edit"></i>
+                    </button>
+                    <button type="button" onClick={ () => deleteCallback(pollID)} className="btn btn-danger" style={{marginLeft:'5px'}}>
+                        <i className="far fa-trash-alt"></i>
+                    </button>
                 </>
                 }
             </td>
