@@ -13,17 +13,48 @@ class TimeSlotPicker extends React.Component{
         const columnname = []
    
         const months = ["Jan","Feb","Mar","Apr","May","June","July","Aug","Sept","Oct","Nov","Dec"];
+        const montleng = [31,28,31,30,31,30,30,31,31,30,31,30,31]; //month length
         const days = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 
+        var month=null;
+
+        var dayiter=0;
         if(sdate.getUTCMonth()==edate.getUTCMonth()){
-            var month = months[sdate.getUTCMonth()]
+            month = months[sdate.getUTCMonth()];
+            for(let i = 0; i<polllength; i++){
+                columnname[i]=days[sdate.getUTCDay()+dayiter]+" "+month+" "+(sdate.getUTCDate()+i);
+                dayiter++;
+                if(dayiter>5){
+                    dayiter=0-sdate.getUTCDay();
+                }
+            }
         } else if(sdate.getUTCMonth()==edate.getUTCMonth()) {
+
+
+            var montdiff=montleng[sdate.getUTCMonth()]-sdate.getUTCDate();
+            month = months[sdate.getUTCMonth()];
             
-        }
+            let x = 0; //index for placing in column
+            for(let i = sdate.getUTCDate(); i<montleng[sdate.getUTCMonth()]+1; i++){
+                columnname[x]=days[sdate.getUTCDay()+dayiter]+" "+month+" "+(sdate.getUTCDate()+x);
+                x++;
+                dayiter++;
+                if(dayiter>5){
+                    dayiter=0-sdate.getUTCDay();
+                }
+            }
 
-
-        for(let i = 0; i<polllength-1; i++){
-            columnname[i]=days[sdate.getUTCDay()+i]+" "+month+" "+(sdate.getUTCDate()+i);
+            month = months[edate.getUTCMonth()];
+            let x1=0;
+            for(let i = 1; i<edate.getUTCDate()+1; i++){
+                columnname[x]=days[sdate.getUTCDay()+dayiter]+" "+month+" "+(1+x1);
+                x++;
+                x1++;
+                dayiter++;
+                if(dayiter>5){
+                    dayiter=0-sdate.getUTCDay();
+                }
+            }
         }
 
         console.log(columnname)
@@ -38,7 +69,7 @@ class TimeSlotPicker extends React.Component{
                         {
 
                         }
-                        <th style={{verticalAlign:'middle'}}>P0ll</th>
+                        <th style={{verticalAlign:'middle'}}>Poll</th>
                     </tr>
                 </thead>
             </table>
