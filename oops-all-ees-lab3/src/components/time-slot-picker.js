@@ -24,23 +24,25 @@ class TimeSlotPicker extends React.Component{
             for(let i = 0; i<polllength; i++){
                 columnname[i]=days[sdate.getUTCDay()+dayiter]+" "+month+" "+(sdate.getUTCDate()+i);
                 dayiter++;
-                if(dayiter>5){
+                if((sdate.getUTCDay()+dayiter)>6){
                     dayiter=0-sdate.getUTCDay();
                 }
             }
-        } else if(sdate.getUTCMonth()==edate.getUTCMonth()) {
+        } else if(sdate.getUTCMonth()!=edate.getUTCMonth()) {
 
 
-            var montdiff=montleng[sdate.getUTCMonth()]-sdate.getUTCDate();
+            //var montdiff=montleng[sdate.getUTCMonth()]-sdate.getUTCDate();
             month = months[sdate.getUTCMonth()];
             
             let x = 0; //index for placing in column
-            for(let i = sdate.getUTCDate(); i<montleng[sdate.getUTCMonth()]+1; i++){
+            for(let i = sdate.getUTCDate(); i<montleng[sdate.getUTCMonth()]; i++){
                 columnname[x]=days[sdate.getUTCDay()+dayiter]+" "+month+" "+(sdate.getUTCDate()+x);
                 x++;
                 dayiter++;
-                if(dayiter>5){
-                    dayiter=0-sdate.getUTCDay();
+                //console.log("out"+dayiter)
+                if((sdate.getUTCDay()+dayiter)>6){
+                    dayiter=(0-sdate.getUTCDay());
+                    //console.log("in"+dayiter)
                 }
             }
 
@@ -51,13 +53,16 @@ class TimeSlotPicker extends React.Component{
                 x++;
                 x1++;
                 dayiter++;
-                if(dayiter>5){
+                if((sdate.getUTCDay()+dayiter)>6){
                     dayiter=0-sdate.getUTCDay();
                 }
             }
         }
 
-        console.log(columnname)
+        //console.log(columnname)
+
+        const rowname = [];
+        
 
     }
 
