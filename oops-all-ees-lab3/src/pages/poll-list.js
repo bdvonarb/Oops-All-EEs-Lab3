@@ -3,6 +3,7 @@ import PollTableRow from '../components/poll-table-row'
 import "../styles/bootstrap.min.css"
 import '../styles/fa/css/all.css'
 import {Link} from 'gatsby'
+import getFirebase from '../../firebase'
 
 
 class PollListPage extends React.Component {
@@ -12,20 +13,70 @@ class PollListPage extends React.Component {
 
         this.newPoll = this.newPoll.bind(this);
         this.deletePoll = this.deletePoll.bind(this);
+        this.componentDidMount = this.componentDidMount.bind(this)
+        this.updateList = this.updateList.bind(this)
     }
 
     newPoll () {
-        this.setState(prevState => ({
-            polls: [...prevState.polls, {"id":prevState.nextID,"title":"poll"+prevState.nextID,"author":"me"}],
-            nextID: prevState.nextID+1
-        }))
+        const lazyApp = import('firebase/app')
+        const lazyDatabase = import('firebase/database')
+
+        Promise.all([lazyApp, lazyDatabase]).then(([f, fdb]) => {
+            const database = fdb.getDatabase(getFirebase(f))
+
+            const newPollKey = fdb.push(fdb.child(fdb.ref(database), 'polls')).key
+            const pollData = {
+                id: newPollKey,
+                title: "Poll " + newPollKey,
+                author: "me"
+            }
+
+            const updates = {}
+            updates['/polls/' + newPollKey] = pollData
+            
+            return fdb.update(fdb.ref(database), updates)
+        })
+        this.updateList()
     }
 
     deletePoll(deleteID) {
-        this.setState(prevState => ({
-            polls: prevState.polls.filter(poll => poll.id !== deleteID)
-        }))
-        console.log(deleteID)
+        const lazyApp = import('firebase/app')
+        const lazyDatabase = import('firebase/database')
+
+        Promise.all([lazyApp, lazyDatabase]).then(([f, fdb]) => {
+            const database = fdb.getDatabase(getFirebase(f))
+            const dataref = fdb.ref(database, '/polls/' + deleteID)
+            return fdb.remove(dataref)
+        })
+        this.updateList()
+    }
+
+    componentDidMount() {
+        this.updateList()
+    }
+
+    updateList() {
+        const lazyApp = import('firebase/app')
+        const lazyDatabase = import('firebase/database')
+
+        Promise.all([lazyApp, lazyDatabase]).then(([f, fdb]) => {
+            const database = fdb.getDatabase(getFirebase(f))
+            const dataref = fdb.query(fdb.ref(database, 'polls/'));
+            fdb.onValue(dataref, (snapshot) => {
+                const data = snapshot.val();
+                var newPolls = []
+                for(var key in data) {
+                    //console.log(JSON.stringify(data[key]))
+                    newPolls.push(data[key])
+                }
+                this.setState(prevState => ({
+                    polls: newPolls
+                }))
+                /*this.state.polls.map(poll => (
+                    console.log(poll)
+                ))*/
+            })
+        })
     }
 
     render() {
@@ -49,7 +100,7 @@ class PollListPage extends React.Component {
                     <tbody>
                         {
                             this.state.polls.map(poll => (
-                                <PollTableRow pollTitle={poll.title} pollAuthor={poll.author} pollID={poll.id} signedin="true" deleteCallback={this.deletePoll}></PollTableRow>
+                                <PollTableRow key={poll.id} pollTitle={poll.title} pollAuthor={poll.author} pollID={poll.id} signedin="true" deleteCallback={this.deletePoll}></PollTableRow>
                             ))
                         }
                     </tbody>
