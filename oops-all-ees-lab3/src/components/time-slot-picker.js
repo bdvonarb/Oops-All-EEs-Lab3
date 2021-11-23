@@ -59,24 +59,89 @@ class TimeSlotPicker extends React.Component{
             }
         }
 
-        //console.log(columnname)
+        console.log(columnname)
+
+        var beginday = new Date();
+        var endday = new Date();
+    
+        //set time for tests
+        beginday.setHours(6);
+        beginday.setMinutes(0);
+        beginday.setSeconds(0);
+        endday.setHours(20);
+        endday.setMinutes(0);
+        endday.setSeconds(0);
 
         const rowname = [];
-        
+        const hours = ["0","1","2","3","4","5","6","7","8","9","10","11","12","1","2","3","4","5","6","7","8","9","10","11","12"];
 
+        var x2=0;//hour incrementer
+        var x3=0;//minute incrementer
+        for(let i=0;i<56+1;i++){
+            rowname[i]=hours[beginday.getHours()+x2]+":"+(0+(x3*15))
+            if(x3==0&&beginday.getHours()+x2<12){
+                rowname[i]=rowname[i]+"0"
+            }else if(x3==0&&beginday.getHours()+x2>11){
+                rowname[i]=rowname[i]+"0"
+            }
+            if(beginday.getHours()+x2<12){
+                rowname[i]=rowname[i]+" am"
+            }else if(beginday.getHours()+x2>11){
+                rowname[i]=rowname[i]+" pm"                
+            }
+            x3++;
+            if(x3>3){
+                x3=0;
+                x2++;
+            }
+        }
+
+        //console.log(beginday.getMinutes())
+        //console.log(endday)  
+        
+        console.log(rowname)
+
+        this.state = {days:[...columnname], times:[...rowname]}
+    }
+
+    tablerow(time){
+        return (
+            <tr>
+                <th>{time}</th>
+                {
+                    this.state.days.map(day => (
+                        <th>
+                    
+                        </th>
+                    ))
+                }
+            </tr>
+        )
     }
 
     render() {
         return (
-            <table>
+            <table className="table-bordered">
                 <thead>
                     <tr>
+                        <th/>
                         {
-
+                            this.state.days.map(day => (
+                                <th>
+                                    {day}
+                                </th>
+                            ))
                         }
-                        <th style={{verticalAlign:'middle'}}>Poll</th>
+
                     </tr>
                 </thead>
+                <tbody>
+                    {
+                        this.state.times.map(time => {
+                            return this.tablerow(time)
+                        })
+                    }
+                </tbody>
             </table>
         )
     }
