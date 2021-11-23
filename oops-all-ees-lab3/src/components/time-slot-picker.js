@@ -101,6 +101,10 @@ class TimeSlotPicker extends React.Component{
         
         //console.log(rowname)
 
+        //style={{position:"absolute", height:"15px", width:"5em", left:"0", top:"auto", borderTopWidth:"1px",marginTop:"-1px"}}
+
+        // style={{borderTop:"1px", position:"absolute", height:"15px",left:"0", borderTopWidth:"1px",marginTop:"-1px"}}
+
         this.state = {days:[...columnname], times:[...rowname]}
     }
 
@@ -122,7 +126,8 @@ class TimeSlotPicker extends React.Component{
     render() {
         return (
  
-            <table className="table-bordered">
+            <table className="table table-striped table-bordered table-sm" 
+            style={{display:"block",width:"900px",height:"500px",overflowY:"scroll",overflowX:"scroll"}}>
                 
                 <thead>
                     <tr>
@@ -130,7 +135,7 @@ class TimeSlotPicker extends React.Component{
                         
                         {
                             this.state.days.map(day => (
-                                <th style={{width:"200px", textAlign:"center"}}>
+                                <th style={{minWidth:"200px", textAlign:"center"}}>
                                     {day}
                                 </th>
                             ))
