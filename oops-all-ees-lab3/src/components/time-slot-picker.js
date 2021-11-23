@@ -59,7 +59,7 @@ class TimeSlotPicker extends React.Component{
             }
         }
 
-        console.log(columnname)
+        //console.log(columnname)
 
         var beginday = new Date();
         var endday = new Date();
@@ -99,7 +99,7 @@ class TimeSlotPicker extends React.Component{
         //console.log(beginday.getMinutes())
         //console.log(endday)  
         
-        console.log(rowname)
+        //console.log(rowname)
 
         this.state = {days:[...columnname], times:[...rowname]}
     }
@@ -121,13 +121,16 @@ class TimeSlotPicker extends React.Component{
 
     render() {
         return (
+ 
             <table className="table-bordered">
+                
                 <thead>
                     <tr>
                         <th/>
+                        
                         {
                             this.state.days.map(day => (
-                                <th>
+                                <th style={{width:"200px", textAlign:"center"}}>
                                     {day}
                                 </th>
                             ))
