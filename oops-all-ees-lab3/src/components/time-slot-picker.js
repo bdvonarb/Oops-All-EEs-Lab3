@@ -2,6 +2,11 @@ import * as React from 'react'
 import { render } from 'react-dom'
 import '../styles/fa/css/all.css'
 
+
+let count = 0
+let msstart = 0
+let msend = 0
+
 class TimeSlotPicker extends React.Component{
     //const  = ({startDate, endDate, selectCallback, children}) => 
 
@@ -107,24 +112,51 @@ class TimeSlotPicker extends React.Component{
         
         //<th/> style={{position="absolute"}}
 
+        
+
         this.state = {days:[...columnname], times:[...rowname]}
+
     }
+
+    
 
     tablerow(time){
         return (
             <tr>
-                <th>
+                <th style={{userSelect:"none"}}>
                     {time}
                 </th>
                 {
                     this.state.days.map(day => (
-                        <th style={{fontSize:"60%", textAlign:"center"}}>
-                            {time}
-                        </th>
+                        <td id={day + " " + time} style={{fontSize:"60%", textAlign:"center", userSelect:"none"}} onMouseDown={this.handleclick} onMouseUp={this.handleclick}>
+                            {day+ " " + time}
+                        </td>
                     ))
                 }
+
             </tr>
         )
+    }
+
+    
+
+    handleclick(event){
+        //console.log(event.target.id)
+        //console.log(event.type)
+        //console.log(count)
+        if(count==0&&event.type==="mousedown"){
+            count=1
+            msstart=event.target.id
+            console.log(msstart)
+        }
+        else if(count==1 && event.type=="mouseup"){
+            count=0
+            msend=event.target.id
+            console.log(msend)
+
+
+
+        }
     }
 
     render() {
@@ -139,7 +171,7 @@ class TimeSlotPicker extends React.Component{
                         
                         {
                             this.state.days.map(day => (
-                                <th style={{minWidth:"200px", textAlign:"center"}}>
+                                <th style={{minWidth:"200px", textAlign:"center", userSelect:"none"}}>
                                     {day}
                                 </th>
                             ))
@@ -148,6 +180,7 @@ class TimeSlotPicker extends React.Component{
                     </tr>
                 </thead>
                 <tbody>
+
                     {
                         this.state.times.map(time => {
                             return this.tablerow(time)
