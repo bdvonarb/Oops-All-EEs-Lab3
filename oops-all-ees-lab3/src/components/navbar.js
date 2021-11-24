@@ -19,7 +19,7 @@ const NavBar = ({children}) => {
                     </a>
                     </li>
                     <li className="nav-item">
-                    <a className="nav-link" href="#">Poll List</a>
+                    <a className="nav-link" href="/src/pages/poll-list.js/">Poll List</a>
                     </li>
                     <li className="nav-item">
                     <a className="nav-link" href="#">Sign In/Out</a>
