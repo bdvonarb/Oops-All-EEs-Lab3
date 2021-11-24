@@ -112,7 +112,7 @@ class TimeSlotPicker extends React.Component{
         
         //<th/> style={{position="absolute"}}
 
-        
+
 
         this.state = {days:[...columnname], times:[...rowname]}
 
@@ -120,15 +120,15 @@ class TimeSlotPicker extends React.Component{
 
     
 
-    tablerow(time){
+    tablerow(time, timeindex){
         return (
             <tr>
                 <th style={{userSelect:"none"}}>
                     {time}
                 </th>
                 {
-                    this.state.days.map(day => (
-                        <td id={day + " " + time} style={{fontSize:"60%", textAlign:"center", userSelect:"none"}} onMouseDown={this.handleclick} onMouseUp={this.handleclick}>
+                    this.state.days.map((day,dayindex) => (
+                        <td id={dayindex + "," + timeindex} style={{fontSize:"60%", textAlign:"center", userSelect:"none"}} onMouseDown={this.handleclick} onMouseUp={this.handleclick}>
                             {day+ " " + time}
                         </td>
                     ))
@@ -182,8 +182,8 @@ class TimeSlotPicker extends React.Component{
                 <tbody>
 
                     {
-                        this.state.times.map(time => {
-                            return this.tablerow(time)
+                        this.state.times.map((time, timeindex) => {
+                            return this.tablerow(time, timeindex)
                         })
                     }
                 </tbody>
