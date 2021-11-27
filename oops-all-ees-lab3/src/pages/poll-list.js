@@ -4,17 +4,19 @@ import "../styles/bootstrap.min.css"
 import '../styles/fa/css/all.css'
 import {Link} from 'gatsby'
 import getFirebase from '../../firebase'
+import NewPollModal from '../components/new-poll-modal'
 
 
 class PollListPage extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {polls:[],nextID:0}
+        this.state = {polls:[],modalShow:false}
 
         this.newPoll = this.newPoll.bind(this);
         this.deletePoll = this.deletePoll.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this)
         this.updateList = this.updateList.bind(this)
+        this.setModalShow =  this.setModalShow.bind(this)
     }
 
     newPoll () {
@@ -79,6 +81,12 @@ class PollListPage extends React.Component {
         })
     }
 
+    setModalShow(show) {
+        this.setState(prevState => ({
+            modalShow: show
+        }))
+    }
+
     render() {
         return (
             <main>
@@ -90,7 +98,7 @@ class PollListPage extends React.Component {
                             <th style={{verticalAlign:'middle'}}>Poll</th>
                             <th style={{verticalAlign:'middle'}}>Author</th>
                             <th style={{verticalAlign:'middle'}}>Actions
-                                <button type="button" className="btn btn-info" onClick={this.newPoll} style={{marginLeft:'5px',float:'right'}}>
+                                <button type="button" className="btn btn-info" onClick={() => this.setModalShow(true)} style={{marginLeft:'5px',float:'right'}}>
                                     <i className="fas fa-plus" style={{marginRight:"10px"}}></i>New
                                 </button>
                             </th>
@@ -105,6 +113,8 @@ class PollListPage extends React.Component {
                         }
                     </tbody>
                 </table>
+
+                <NewPollModal show={this.state.modalShow} onHide={() => this.setModalShow(false)}></NewPollModal>
             </main>
         )
     }
