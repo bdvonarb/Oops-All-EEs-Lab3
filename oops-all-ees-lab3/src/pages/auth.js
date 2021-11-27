@@ -17,7 +17,9 @@ export const handlelogin = ({email, password}) => {
             name: 'administator',
         })
     }
-    return false
+    else {
+        return false
+    }
 }
 
 export const isloggedin = () => {
