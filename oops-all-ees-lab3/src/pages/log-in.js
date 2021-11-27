@@ -1,23 +1,20 @@
 import * as React from "react"
 
 const Bodystyle = {
-  backgroundColor: "blue",
-  height: "800px",
-  margin: "-100px 0px 0px 0px",
+  backgroundColor: "#ffcd00",
 }
 
 const Mainstyle = {
-    color: "#1be6e2",
+    color: "white",
     width: "350px",
     margin: "auto",
-    margin: "100px 0px 0px 450px",
+    marginTop: "10%",
     padding: "90px",
-    backgroundColor: "#23463f",
+    backgroundColor: "black",
     fontFamily: "Times, Times New Roman, serif",
     fontSize: "18px",
     borderRadius: "20px",
 }  
-
 
 const Loginforadmins = () => {
     return (
