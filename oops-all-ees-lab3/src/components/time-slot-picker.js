@@ -153,32 +153,31 @@ class TimeSlotPicker extends React.Component{
         //console.log(event.type)
         //console.log(count)
         if(event.type==="mousedown"){
-            count=1
+            //count=1
             var msstarta= event.target.id.split(",")
-            console.log(event.target.id)
+            //console.log(event.target.id)
             ///console.log(msstarta[0]+msstarta[1])
             //console.log(parseInt(msstarta[0])-2)
             
             this.setState(prevState => ({
                 msstart:event.target.id,
-                msend:"-1,-1"
+                msend:"none"//"-1,-1"
             }))
         }
         else if(event.type==="mouseup"){
-            count=0
+            //count=0
             var msstarta= this.state.msstart.split(",")
             var msenda= event.target.id.split(",")
-            console.log(event.target.id)
+            //console.log(event.target.id)
             
 
-            var x = Math.abs(parseInt(msenda[0])-parseInt(msstarta[0]))
-            var y = Math.abs(parseInt(msenda[1])-parseInt(msstarta[1]))
+            
 
             //console.log(x)
             //var tabmap = new Array()
             for(let i=parseInt(msstarta[0]);i<=parseInt(msenda[0]);i++){
                 for(let j=parseInt(msstarta[1]);j<=parseInt(msenda[1]);j++){
-                    console.log(i+" "+j)
+                    //console.log(i+" "+j)
                 }
             }
 
@@ -211,6 +210,15 @@ class TimeSlotPicker extends React.Component{
                 }
             }
         }
+
+        for(let i=parseInt(msenda[0]);i<=parseInt(msstarta[0]);i++){
+            for(let j=parseInt(msenda[1]);j<=parseInt(msstarta[1]);j++){
+                if(id===(i+","+j)) {
+                    return true
+                }
+            }
+        }
+
         return false
     }
 
