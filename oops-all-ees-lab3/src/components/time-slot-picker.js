@@ -4,8 +4,10 @@ import '../styles/fa/css/all.css'
 
 
 let count = 0
-let msstart = 0
-let msend = 0
+//var msstart = 0
+//const msstart = 0
+//var msend = 0
+//const msend = 0
 
 class TimeSlotPicker extends React.Component{
     //const  = ({startDate, endDate, selectCallback, children}) => 
@@ -114,8 +116,9 @@ class TimeSlotPicker extends React.Component{
 
 
 
-        this.state = {days:[...columnname], times:[...rowname]}
+        this.state = {days:[...columnname], times:[...rowname], msstart:"0,0", msend:"0,0"}
 
+        this.handleclick = this.handleclick.bind(this)
     }
 
     
@@ -138,7 +141,11 @@ class TimeSlotPicker extends React.Component{
         )
     }
 
-    
+    //handleclick2(event){
+    //    console.log(event.type)
+    //}
+
+
 
     handleclick(event){
         //console.log(event.target.id)
@@ -146,17 +153,36 @@ class TimeSlotPicker extends React.Component{
         //console.log(count)
         if(count==0&&event.type==="mousedown"){
             count=1
-            msstart=event.target.id
-            console.log(msstart)
+            this.state.msstart=event.target.id
+            var msstarta= this.state.msstart.split(",")
+            //console.log(this.state.msstart)
+            ///console.log(msstarta[0]+msstarta[1])
+            //console.log(parseInt(msstarta[0])-2)
         }
         else if(count==1 && event.type=="mouseup"){
             count=0
-            msend=event.target.id
-            console.log(msend)
+            this.state.msend=event.target.id
+            var msstarta= this.state.msstart.split(",")
+            var msenda= this.state.msend.split(",")
+            ///console.log(msenda[0]+msenda[1])
+            
 
+            var x = Math.abs(parseInt(msenda[0])-parseInt(msstarta[0]))
+            var y = Math.abs(parseInt(msenda[1])-parseInt(msstarta[1]))
 
+            //console.log(x)
+            //var tabmap = new Array()
+            for(let i=msstarta[0];i<=x;i++){
+                for(let j=msstarta[1];j<=y;j++){
+                    console.log(i+" "+j)
+                }
+            }
 
         }
+
+
+
+
     }
 
     render() {
