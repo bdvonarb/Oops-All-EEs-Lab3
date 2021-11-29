@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { Link } from 'gatsby'
 import '../styles/fa/css/all.css'
 import '../styles/bootstrap.min.css'
 
@@ -19,7 +20,7 @@ const NavBar = ({children}) => {
                     </a>
                     </li>
                     <li className="nav-item">
-                    <a className="nav-link" href="/src/pages/poll-list.js/">Poll List</a>
+                    <a className="nav-link" href="poll-list">Poll List</a>
                     </li>
                     <li className="nav-item">
                     <a className="nav-link" href="#">Sign In/Out</a>
