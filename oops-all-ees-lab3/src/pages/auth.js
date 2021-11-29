@@ -1,21 +1,25 @@
 import * as React from "react"
+import { navigate } from "gatsby" 
 
-export const Broswer = () => typeof window !=="undefined"
+export const Window = () => typeof window !=="undefined"
 
 export const getUser = () =>
-    Broswer() && window.localstorage.getItem("gatsbyuser")
-    ? JSON.parse(window.localstorage.getItem("gatsbyuser"))
+    Window() && window.localstorage.getItem("OAEEsuser")
+    ? JSON.parse(window.localstorage.getItem("OAEEsuser"))
     : {}
 
-    const setUser = User => 
-        window.localstorage.setItem("gatsbyuser", JSON.stringify(User))
+    const isUser = User => 
+        window.localstorage.setItem("OAEEsuser", JSON.stringify(User))
 
-export const handlelogin = ({email, password}) => {
+export const loginsystem = ({email, password}) => {
     if (email === 'admin@oopsallees.com' && password === 'guest') {
-        return setUser({
+        navigate('/')
+        return isUser(
+            {
             email: 'admin',
             name: 'administator',
-        })
+        }
+        )
     }
     else {
         return false
@@ -28,7 +32,7 @@ export const isloggedin = () => {
     return !!User.email
 }
 
-export const logout = callback => {
-    setUser({})
-    callback()
-}
+//export const logout = callback => {
+   // isUser({})
+   // callback()
+//}
