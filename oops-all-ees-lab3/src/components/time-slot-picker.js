@@ -119,6 +119,7 @@ class TimeSlotPicker extends React.Component{
         this.state = {days:[...columnname], times:[...rowname], msstart:"0,0", msend:"0,0"}
 
         this.handleclick = this.handleclick.bind(this)
+        this.isHighlighted = this.isHighlighted.bind(this)
     }
 
     
@@ -131,7 +132,7 @@ class TimeSlotPicker extends React.Component{
                 </th>
                 {
                     this.state.days.map((day,dayindex) => (
-                        <td id={dayindex + "," + timeindex} style={{fontSize:"60%", textAlign:"center", userSelect:"none"}} onMouseDown={this.handleclick} onMouseUp={this.handleclick}>
+                        <td id={dayindex + "," + timeindex} key={dayindex + "," + timeindex} style={{fontSize:"60%", textAlign:"center", userSelect:"none", backgroundColor:this.isHighlighted(dayindex+","+timeindex)?"#4287f5":"white"}} onMouseDown={this.handleclick} onMouseUp={this.handleclick}>
                             {day+ " " + time}
                         </td>
                     ))
@@ -151,20 +152,23 @@ class TimeSlotPicker extends React.Component{
         //console.log(event.target.id)
         //console.log(event.type)
         //console.log(count)
-        if(count==0&&event.type==="mousedown"){
+        if(event.type==="mousedown"){
             count=1
-            this.state.msstart=event.target.id
-            var msstarta= this.state.msstart.split(",")
-            //console.log(this.state.msstart)
+            var msstarta= event.target.id.split(",")
+            console.log(event.target.id)
             ///console.log(msstarta[0]+msstarta[1])
             //console.log(parseInt(msstarta[0])-2)
+            
+            this.setState(prevState => ({
+                msstart:event.target.id,
+                msend:"-1,-1"
+            }))
         }
-        else if(count==1 && event.type=="mouseup"){
+        else if(event.type==="mouseup"){
             count=0
-            this.state.msend=event.target.id
             var msstarta= this.state.msstart.split(",")
-            var msenda= this.state.msend.split(",")
-            ///console.log(msenda[0]+msenda[1])
+            var msenda= event.target.id.split(",")
+            console.log(event.target.id)
             
 
             var x = Math.abs(parseInt(msenda[0])-parseInt(msstarta[0]))
@@ -172,17 +176,42 @@ class TimeSlotPicker extends React.Component{
 
             //console.log(x)
             //var tabmap = new Array()
-            for(let i=msstarta[0];i<=x;i++){
-                for(let j=msstarta[1];j<=y;j++){
+            for(let i=parseInt(msstarta[0]);i<=parseInt(msenda[0]);i++){
+                for(let j=parseInt(msstarta[1]);j<=parseInt(msenda[1]);j++){
                     console.log(i+" "+j)
                 }
             }
+
+            this.setState(prevState => ({
+                msend:event.target.id
+            }))
 
         }
 
 
 
 
+    }
+
+    isHighlighted(id) {
+        var msstarta= this.state.msstart.split(",")
+        var msenda= this.state.msend.split(",")
+        ///console.log(msenda[0]+msenda[1])
+        
+
+        var x = Math.abs(parseInt(msenda[0])-parseInt(msstarta[0]))
+        var y = Math.abs(parseInt(msenda[1])-parseInt(msstarta[1]))
+
+        //console.log(x)
+        //var tabmap = new Array()
+        for(let i=parseInt(msstarta[0]);i<=parseInt(msenda[0]);i++){
+            for(let j=parseInt(msstarta[1]);j<=parseInt(msenda[1]);j++){
+                if(id===(i+","+j)) {
+                    return true
+                }
+            }
+        }
+        return false
     }
 
     render() {
@@ -196,8 +225,8 @@ class TimeSlotPicker extends React.Component{
                         <th/>
                         
                         {
-                            this.state.days.map(day => (
-                                <th style={{minWidth:"200px", textAlign:"center", userSelect:"none"}}>
+                            this.state.days.map((day,index) => (
+                                <th key={index} style={{minWidth:"200px", textAlign:"center", userSelect:"none"}}>
                                     {day}
                                 </th>
                             ))
