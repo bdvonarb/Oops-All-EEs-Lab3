@@ -1,4 +1,6 @@
-import * as React from "react"
+import { navigate } from "gatsby-link"
+import * as React from "react" 
+import { logout } from "../components/auth"
 
 // styles
 const pageStyles = {

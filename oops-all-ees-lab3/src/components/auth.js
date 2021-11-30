@@ -4,17 +4,20 @@ import { navigate } from "gatsby"
 export const Window = () => typeof window !=="undefined"
 
 export const getUser = () =>
-    Window() && window.localstorage.getItem("OAEEsuser")
-    ? JSON.parse(window.localstorage.getItem("OAEEsuser"))
+    Window() && window.localStorage.getItem("OAEEsuser")
+    ? JSON.parse(window.localStorage.getItem("OAEEsuser"))
     : {}
 
-    const isUser = User => 
-        window.localstorage.setItem("OAEEsuser", JSON.stringify(User))
+ const setUser = User => 
+      window.localStorage.setItem("OAEEsuser", JSON.stringify(User))
 
 export const loginsystem = ({email, password}) => {
+    console.log("hi")
+    console.log(email)
+    console.log(password)
     if (email === 'admin@oopsallees.com' && password === 'guest') {
-        navigate('/')
-        return isUser(
+        console.log("success")
+        return setUser(
             {
             email: 'admin',
             name: 'administator',
@@ -22,17 +25,21 @@ export const loginsystem = ({email, password}) => {
         )
     }
     else {
+        console.log("fail")
         return false
     }
 }
 
 export const isloggedin = () => {
+    console.log("checking")
     const User = getUser()
+    console.log(User)
      
     return !!User.email
 }
 
-//export const logout = callback => {
-   // isUser({})
-   // callback()
-//}
+export const logout = callback => {
+    setUser({})
+    console.log("logged out")
+    callback()
+  }

@@ -1,4 +1,8 @@
+import { navigate } from "gatsby-link"
 import * as React from "react"
+import {loginsystem, isloggedin} from "../components/auth"
+//import Layout from '../components/layout'
+
 
 const Bodystyle = {
   backgroundColor: "#ffcd00",
@@ -16,26 +20,50 @@ const Mainstyle = {
     borderRadius: "20px",
 }  
 
-const Loginforadmins = () => {
+class Loginforadmins extends React.Component {
+  state = {
+    email: ``,
+    password: ``,
+  }
+  handleUpdate = event => {
+    this.setState({
+      [event.target.name]: event.target.value,
+    })
+  }
+  handleSubmit = event => {
+    event.preventDefault()
+    loginsystem(this.state)
+    this.forceUpdate()
+  }
+
+  render(){
+    if (isloggedin()) {
+      navigate(`/`)
+    }
     return (
+     // <Layout pageTitle="Oops All EEs Doodle">
       <>
-      <body style={Bodystyle}>
+      <div style={Bodystyle}>
        <main style={Mainstyle}>
-         <h1>Login</h1>
-         <form>
+         <h1>Login {isloggedin()&&"Logged in"}</h1>
+         <form onSubmit={event => {
+           this.handleSubmit(event)
+         }}>
 
-        <label for="email address">Email address:</label><br />
-        <input type="text" id="emailaddress" name="emailaddress" /><br />
+        <label htmlFor="email address">Email address:</label><br />
+        <input type="text" id="emailaddress" name="email" onChange={this.handleUpdate}/><br />
 
-        <label for="password">Password:</label><br />
-        <input type="text" id="password" name="password" /><br />
+        <label htmlFor="password">Password:</label><br />
+        <input type="password" id="password" name="password" onChange={this.handleUpdate}/><br />
 
-        <input type="submit" value="Submit" /><br />
+        <input type="submit" value="Submit"/><br />
 
       </form>
       </main>
-      </body>
+      </div>
       </>   
+     // </Layout>
     )
+  }
 }
 export default Loginforadmins
