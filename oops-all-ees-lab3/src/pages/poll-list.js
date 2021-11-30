@@ -6,6 +6,7 @@ import {Link} from 'gatsby'
 import getFirebase from '../../firebase'
 import NewPollModal from '../components/new-poll-modal'
 import {isloggedin} from '../components/auth'
+import Layout from '../components/layout'
 
 
 class PollListPage extends React.Component {
@@ -90,7 +91,9 @@ class PollListPage extends React.Component {
 
     render() {
         return (
+            <Layout pageTitle="Poll List: Oops All EEs Doodle">
             <main>
+
                 <title>Oops All EEs Lab 3</title>
                 
                 <table className="table table-striped">
@@ -124,6 +127,7 @@ class PollListPage extends React.Component {
 
                 <NewPollModal show={this.state.modalShow} onHide={() => this.setModalShow(false)}></NewPollModal>
             </main>
+            </Layout>
         )
     }
 
