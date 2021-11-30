@@ -1,20 +1,20 @@
 import { navigate } from "gatsby-link"
 import * as React from "react"
 import {loginsystem, isloggedin} from "../components/auth"
-//import Layout from '../components/layout'
+import Layout from '../components/layout'
 
 
 const Bodystyle = {
-  backgroundColor: "#ffcd00",
+  backgroundColor: "#warning",
 }
 
 const Mainstyle = {
-    color: "white",
+    color: "black",
     width: "350px",
     margin: "auto",
     marginTop: "10%",
     padding: "90px",
-    backgroundColor: "black",
+    backgroundColor: "#aab7b8",
     fontFamily: "Times, Times New Roman, serif",
     fontSize: "18px",
     borderRadius: "20px",
@@ -41,7 +41,7 @@ class Loginforadmins extends React.Component {
       navigate(`/`)
     }
     return (
-     // <Layout pageTitle="Oops All EEs Doodle">
+      <Layout pageTitle="Sign In: Oops All EEs Doodle">
       <>
       <div style={Bodystyle}>
        <main style={Mainstyle}>
@@ -62,7 +62,7 @@ class Loginforadmins extends React.Component {
       </main>
       </div>
       </>   
-     // </Layout>
+      </Layout>
     )
   }
 }

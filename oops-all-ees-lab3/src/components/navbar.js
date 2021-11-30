@@ -1,7 +1,8 @@
 import * as React from 'react'
-import { Link } from 'gatsby'
+import { Link,navigate } from 'gatsby'
 import '../styles/fa/css/all.css'
 import '../styles/bootstrap.min.css'
+import { isloggedin, logout } from './auth'
 
 const NavBar = ({children}) => {
     return (
@@ -20,16 +21,13 @@ const NavBar = ({children}) => {
                     </a>
                     </li>
                     <li className="nav-item">
-                    <a className="nav-link" href="poll-list">Poll List</a>
+                    <a className="nav-link" href="/poll-list">Poll List</a>
                     </li>
                     <li className="nav-item">
-                    <a className="nav-link" href="#">Sign In/Out</a>
+                    <a className="nav-link" href="/log-in"onClick={event=>{if(isloggedin()){event.preventDefault();logout(()=>navigate('/log-in'))}}}>{isloggedin()?"Sign Out":"Sign In"}</a>
                     </li>
                 </ul>
-                <form className="d-flex">
-                    <input className="form-control me-sm-2" type="text" placeholder="Search"/>
-                    <button className="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-                </form>
+                
                 </div>
             </div>
             </nav>

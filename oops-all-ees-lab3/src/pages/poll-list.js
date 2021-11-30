@@ -82,9 +82,9 @@ class PollListPage extends React.Component {
 
     render() {
         return (
-            <Layout pageTitle="Oops All EEs Doodle">
+            <Layout pageTitle="Poll List: Oops All EEs Doodle">
             <main>
-                
+
                 <title>Oops All EEs Lab 3</title>
                 
                 <table className="table table-striped">

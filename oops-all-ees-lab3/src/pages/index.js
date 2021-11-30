@@ -7,12 +7,12 @@ import Layout from '../components/layout'
 const IndexPage = () => {
   return (
     <main>
-      <Layout pageTitle="Oops All EEs Doodle">
+      <Layout pageTitle="Home: Oops All EEs Doodle">
       <h1></h1>
-      <p>I'm making this by following the Gatsby Tutorial.<br></br><br></br><br></br><br></br>
+      <p><br></br><br></br><br></br><br></br>
       <br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
       <br></br><br></br><br></br><br></br></p>
-      <p> im making this following gatsby tutorial.</p>
+      <p><br></br></p>
     </Layout>
     </main>
   )
