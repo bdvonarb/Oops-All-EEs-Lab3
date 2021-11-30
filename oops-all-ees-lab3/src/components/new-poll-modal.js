@@ -66,6 +66,7 @@ class NewPollModal extends React.Component {
                 }))
             } else {
                 this.setState(prevState => ({
+                    startDate: event.target.value,
                     helpText: "<Error>Start Date cannot be after End Date"
                 }))
             }
@@ -78,6 +79,7 @@ class NewPollModal extends React.Component {
                 }))
             } else {
                 this.setState(prevState => ({
+                    endDate: event.target.value,
                     helpText: "<Error>End Date cannot be before Start Date"
                 }))
             }
@@ -93,6 +95,7 @@ class NewPollModal extends React.Component {
             }))
         } else {
             this.setState(prevState => ({
+                title: event.target.value,
                 helpText: "<Error>Title cannot be empty"
             }))
         }
@@ -107,6 +110,7 @@ class NewPollModal extends React.Component {
             }))
         } else {
             this.setState(prevState => ({
+                timezone: event.target.value,
                 helpText: "<Error>You must select a Timezone"
             }))
         }
