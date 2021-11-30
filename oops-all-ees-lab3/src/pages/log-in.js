@@ -24,6 +24,7 @@ class Loginforadmins extends React.Component {
   state = {
     email: ``,
     password: ``,
+    submit: false
   }
   handleUpdate = event => {
     this.setState({
@@ -38,25 +39,26 @@ class Loginforadmins extends React.Component {
 
   render(){
     if (isloggedin()) {
-      navigate(`/`)
+      setTimeout(() => navigate(`/`), 3000)
     }
     return (
      // <Layout pageTitle="Oops All EEs Doodle">
       <>
       <div style={Bodystyle}>
        <main style={Mainstyle}>
-         <h1>Login {isloggedin()&&"Logged in"}</h1>
+         <h1>Login</h1>
+         <p>{isloggedin() && "Already Logged In, redirecting to home"}</p>
          <form onSubmit={event => {
            this.handleSubmit(event)
          }}>
 
         <label htmlFor="email address">Email address:</label><br />
-        <input type="text" id="emailaddress" name="email" onChange={this.handleUpdate}/><br />
+        <input type="text" id="emailaddress" name="email" onChange={this.handleUpdate} disabled={isloggedin()}/><br />
 
         <label htmlFor="password">Password:</label><br />
-        <input type="password" id="password" name="password" onChange={this.handleUpdate}/><br />
+        <input type="password" id="password" name="password" onChange={this.handleUpdate} disabled={isloggedin()}/><br />
 
-        <input type="submit" value="Submit"/><br />
+        <input type="submit" value="Submit" disabled={isloggedin()}/><br />
 
       </form>
       </main>

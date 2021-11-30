@@ -5,6 +5,7 @@ import '../styles/fa/css/all.css'
 import {Link} from 'gatsby'
 import getFirebase from '../../firebase'
 import NewPollModal from '../components/new-poll-modal'
+import {isloggedin} from '../components/auth'
 
 
 class PollListPage extends React.Component {
@@ -100,9 +101,13 @@ class PollListPage extends React.Component {
                             <th style={{verticalAlign:'middle', padding:'auto 0'}}>
                                 <div className="row">
                                     <p style={{verticalAlign:'middle',width:'80px',margin:"auto 0"}}>Actions</p>
-                                    <button type="button" className="btn btn-info" onClick={() => this.setModalShow(true)} style={{marginLeft:'5px',float:'right',display:'inline-block',width:'90px'}}>
-                                        <i className="fas fa-plus" style={{marginRight:"10px"}}></i>New
-                                    </button>
+                                    {
+                                        isloggedin() && <>
+                                            <button type="button" className="btn btn-info" onClick={() => this.setModalShow(true)} style={{marginLeft:'5px',float:'right',display:'inline-block',width:'90px'}}>
+                                                <i className="fas fa-plus" style={{marginRight:"10px"}}></i>New
+                                            </button>
+                                        </>
+                                    }
                                 </div>
                             </th>
                             
@@ -111,7 +116,7 @@ class PollListPage extends React.Component {
                     <tbody>
                         {
                             this.state.polls.map(poll => (
-                                <PollTableRow key={poll.id} pollTitle={poll.title} pollAuthor={poll.author} pollID={poll.id} signedin="true" deleteCallback={this.deletePoll}></PollTableRow>
+                                <PollTableRow key={poll.id} pollTitle={poll.title} pollAuthor={poll.author} pollID={poll.id} signedin={isloggedin()} deleteCallback={this.deletePoll}></PollTableRow>
                             ))
                         }
                     </tbody>

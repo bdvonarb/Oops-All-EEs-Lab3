@@ -10,7 +10,7 @@ const PollTableRow = ({ pollTitle, pollAuthor, pollID, signedin, deleteCallback,
                 <button type="button" className="btn btn-primary" style={{marginLeft:'5px'}}>
                     <i className="far fa-eye"></i>
                 </button>
-                {signedin === "true" && <>
+                {signedin && <>
                     <button type="button" className="btn btn-success" style={{marginLeft:'5px'}}>
                         <i className="far fa-edit"></i>
                     </button>
