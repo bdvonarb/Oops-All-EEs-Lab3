@@ -5,16 +5,16 @@ import {loginsystem, isloggedin} from "../components/auth"
 
 
 const Bodystyle = {
-  backgroundColor: "#ffcd00",
+  backgroundColor: "#ffc107",
 }
 
 const Mainstyle = {
-    color: "white",
+    color: "117864",
     width: "350px",
     margin: "auto",
     marginTop: "10%",
     padding: "90px",
-    backgroundColor: "black",
+    backgroundColor: "#AAB7B8",
     fontFamily: "Times, Times New Roman, serif",
     fontSize: "18px",
     borderRadius: "20px",
