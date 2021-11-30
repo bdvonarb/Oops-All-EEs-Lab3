@@ -33,7 +33,12 @@ class Loginforadmins extends React.Component {
   }
   handleSubmit = event => {
     event.preventDefault()
-    loginsystem(this.state)
+    if(loginsystem(this.state)){
+      navigate('/')
+    }
+    this.setState({
+      submit: true
+    })
     this.forceUpdate()
   }
 
@@ -47,7 +52,8 @@ class Loginforadmins extends React.Component {
       <div style={Bodystyle}>
        <main style={Mainstyle}>
          <h1>Login</h1>
-         <p>{isloggedin() && "Already Logged In, redirecting to home"}</p>
+         <p>{isloggedin() && "Already Signed In, redirecting to home"}</p>
+         <p>{!isloggedin() && this.state.submit && "Sign In failed"}</p>
          <form onSubmit={event => {
            this.handleSubmit(event)
          }}>

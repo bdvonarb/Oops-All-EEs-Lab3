@@ -2,7 +2,6 @@ import * as React from 'react'
 import PollTableRow from '../components/poll-table-row'
 import "../styles/bootstrap.min.css"
 import '../styles/fa/css/all.css'
-import {Link} from 'gatsby'
 import getFirebase from '../../firebase'
 import NewPollModal from '../components/new-poll-modal'
 import {isloggedin} from '../components/auth'
@@ -95,37 +94,38 @@ class PollListPage extends React.Component {
             <main>
 
                 <title>Oops All EEs Lab 3</title>
-                
-                <table className="table table-striped">
-                    <thead>
-                        <tr>
-                            <th style={{verticalAlign:'middle'}}>Poll</th>
-                            <th style={{verticalAlign:'middle'}}>Author</th>
-                            <th style={{verticalAlign:'middle', padding:'auto 0'}}>
-                                <div className="row">
-                                    <p style={{verticalAlign:'middle',width:'80px',margin:"auto 0"}}>Actions</p>
-                                    {
-                                        isloggedin() && <>
-                                            <button type="button" className="btn btn-info" onClick={() => this.setModalShow(true)} style={{marginLeft:'5px',float:'right',display:'inline-block',width:'90px'}}>
-                                                <i className="fas fa-plus" style={{marginRight:"10px"}}></i>New
-                                            </button>
-                                        </>
-                                    }
-                                </div>
-                            </th>
-                            
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {
-                            this.state.polls.map(poll => (
-                                <PollTableRow key={poll.id} pollTitle={poll.title} pollAuthor={poll.author} pollID={poll.id} signedin={isloggedin()} deleteCallback={this.deletePoll}></PollTableRow>
-                            ))
-                        }
-                    </tbody>
-                </table>
+                <div style={{backgroundColor:"#ffffff", borderRadius:"10px", border:"1px solid #000000", width:"90%", margin:"0 auto"}}>
+                    <table className="table table-striped">
+                        <thead>
+                            <tr>
+                                <th style={{verticalAlign:'middle'}}>Poll</th>
+                                <th style={{verticalAlign:'middle'}}>Author</th>
+                                <th style={{verticalAlign:'middle', padding:'auto 0'}}>
+                                    <div className="row">
+                                        <p style={{verticalAlign:'middle',width:'80px',margin:"auto 0"}}>Actions</p>
+                                        {
+                                            isloggedin() && <>
+                                                <button type="button" className="btn btn-info" onClick={() => this.setModalShow(true)} style={{marginLeft:'5px',float:'right',display:'inline-block',width:'90px'}}>
+                                                    <i className="fas fa-plus" style={{marginRight:"10px"}}></i>New
+                                                </button>
+                                            </>
+                                        }
+                                    </div>
+                                </th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                this.state.polls.map(poll => (
+                                    <PollTableRow key={poll.id} pollTitle={poll.title} pollAuthor={poll.author} pollID={poll.id} signedin={isloggedin()} deleteCallback={this.deletePoll}></PollTableRow>
+                                ))
+                            }
+                        </tbody>
+                    </table>
 
-                <NewPollModal show={this.state.modalShow} onHide={() => this.setModalShow(false)}></NewPollModal>
+                    <NewPollModal show={this.state.modalShow} onHide={() => this.setModalShow(false)}></NewPollModal>
+                </div>
             </main>
             </Layout>
         )
