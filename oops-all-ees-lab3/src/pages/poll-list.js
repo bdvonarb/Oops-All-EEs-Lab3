@@ -97,10 +97,13 @@ class PollListPage extends React.Component {
                         <tr>
                             <th style={{verticalAlign:'middle'}}>Poll</th>
                             <th style={{verticalAlign:'middle'}}>Author</th>
-                            <th style={{verticalAlign:'middle'}}>Actions
-                                <button type="button" className="btn btn-info" onClick={() => this.setModalShow(true)} style={{marginLeft:'5px',float:'right'}}>
-                                    <i className="fas fa-plus" style={{marginRight:"10px"}}></i>New
-                                </button>
+                            <th style={{verticalAlign:'middle', padding:'auto 0'}}>
+                                <div className="row">
+                                    <p style={{verticalAlign:'middle',width:'80px',margin:"auto 0"}}>Actions</p>
+                                    <button type="button" className="btn btn-info" onClick={() => this.setModalShow(true)} style={{marginLeft:'5px',float:'right',display:'inline-block',width:'90px'}}>
+                                        <i className="fas fa-plus" style={{marginRight:"10px"}}></i>New
+                                    </button>
+                                </div>
                             </th>
                             
                         </tr>
