@@ -1,15 +1,19 @@
 // Step 1: Import React
 import * as React from 'react'
-import {Link} from 'gatsby'
+import NavBar from '../components/navbar'
+import Layout from '../components/layout'
 
 // Step 2: Define your component
 const IndexPage = () => {
   return (
     <main>
-      <title>Oops All EEs</title>
-      <h1>Hi Nichole</h1>
-      <p>I'm making this by following the Gatsby Tutorial.</p>
-      <Link to="/poll-list">Poll List</Link>
+      <Layout pageTitle="Home: Oops All EEs Doodle">
+      <h1></h1>
+      <p><br></br><br></br><br></br><br></br>
+      <br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
+      <br></br><br></br><br></br><br></br></p>
+      <p><br></br></p>
+    </Layout>
     </main>
   )
 }
