@@ -2,6 +2,7 @@ import * as React from 'react'
 import '../styles/fa/css/all.css'
 import '../styles/bootstrap.min.css'
 import background from '../images/geometric-leaves.png'
+import NavBar from '../components/navbar'
 
 const Layout = ({ pageTitle, children }) => {
     return (
@@ -10,11 +11,15 @@ const Layout = ({ pageTitle, children }) => {
         <nav>
         
         </nav>
+        <NavBar></NavBar>
         <main>
+        
           <h1>{pageTitle}</h1>
           {children}
+          
         </main>
       </div>
+      
     )
   }
   export default Layout
