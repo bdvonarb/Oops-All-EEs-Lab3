@@ -4,6 +4,7 @@ import "../styles/bootstrap.min.css"
 import '../styles/fa/css/all.css'
 import {Link} from 'gatsby'
 import getFirebase from '../../firebase'
+import Layout from '../components/layout'
 
 
 class PollListPage extends React.Component {
@@ -81,7 +82,9 @@ class PollListPage extends React.Component {
 
     render() {
         return (
+            <Layout pageTitle="Oops All EEs Doodle">
             <main>
+                
                 <title>Oops All EEs Lab 3</title>
                 
                 <table className="table table-striped">
@@ -106,6 +109,7 @@ class PollListPage extends React.Component {
                     </tbody>
                 </table>
             </main>
+            </Layout>
         )
     }
 
