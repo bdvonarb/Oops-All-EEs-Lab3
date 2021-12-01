@@ -3,11 +3,6 @@ import { render } from 'react-dom'
 import '../styles/fa/css/all.css'
 
 
-let count = 0
-//var msstart = 0
-//const msstart = 0
-//var msend = 0
-//const msend = 0
 
 class TimeSlotPicker extends React.Component{
     //const  = ({startDate, endDate, selectCallback, children}) => 
@@ -26,7 +21,7 @@ class TimeSlotPicker extends React.Component{
         var month=null;
 
         var dayiter=0;
-        if(sdate.getUTCMonth()==edate.getUTCMonth()){
+        if(sdate.getUTCMonth()===edate.getUTCMonth()){
             month = months[sdate.getUTCMonth()];
             for(let i = 0; i<polllength; i++){
                 columnname[i]=days[sdate.getUTCDay()+dayiter]+" "+month+" "+(sdate.getUTCDate()+i);
@@ -35,7 +30,7 @@ class TimeSlotPicker extends React.Component{
                     dayiter=0-sdate.getUTCDay();
                 }
             }
-        } else if(sdate.getUTCMonth()!=edate.getUTCMonth()) {
+        } else if(sdate.getUTCMonth()!==edate.getUTCMonth()) {
 
 
             //var montdiff=montleng[sdate.getUTCMonth()]-sdate.getUTCDate();
@@ -86,9 +81,9 @@ class TimeSlotPicker extends React.Component{
         var x3=0;//minute incrementer
         for(let i=0;i<56+1;i++){
             rowname[i]=hours[beginday.getHours()+x2]+":"+(0+(x3*15))
-            if(x3==0&&beginday.getHours()+x2<12){
+            if(x3===0&&beginday.getHours()+x2<12){
                 rowname[i]=rowname[i]+"0"
-            }else if(x3==0&&beginday.getHours()+x2>11){
+            }else if(x3===0&&beginday.getHours()+x2>11){
                 rowname[i]=rowname[i]+"0"
             }
             if(beginday.getHours()+x2<12){
@@ -116,10 +111,14 @@ class TimeSlotPicker extends React.Component{
 
 
 
-        this.state = {days:[...columnname], times:[...rowname], msstart:"0,0", msend:"0,0"}
+        this.state = {days:[...columnname], times:[...rowname], msstart:"none", msend:"none", regions:[], down:"0",regions_dat:[]}
 
         this.handleclick = this.handleclick.bind(this)
         this.isHighlighted = this.isHighlighted.bind(this)
+
+        this.Highlighted = this.Highlighted.bind(this)
+
+        this.idtodate = this.idtodate.bind(this)
     }
 
     
@@ -132,7 +131,7 @@ class TimeSlotPicker extends React.Component{
                 </th>
                 {
                     this.state.days.map((day,dayindex) => (
-                        <td id={dayindex + "," + timeindex} key={dayindex + "," + timeindex} style={{fontSize:"60%", textAlign:"center", userSelect:"none", backgroundColor:this.isHighlighted(dayindex+","+timeindex)?"#4287f5":"white"}} onMouseDown={this.handleclick} onMouseUp={this.handleclick}>
+                        <td id={dayindex + "," + timeindex} key={dayindex + "," + timeindex} style={{fontSize:"60%", textAlign:"center", userSelect:"none", backgroundColor:this.isHighlighted(dayindex+","+timeindex)?"#4287f5":this.Highlighted(dayindex+","+timeindex)?"#64748f":"white" }} onMouseDown={this.handleclick} onMouseOver={this.handleclick}>
                             {day+ " " + time}
                         </td>
                     ))
@@ -142,67 +141,181 @@ class TimeSlotPicker extends React.Component{
         )
     }
 
-    //handleclick2(event){
-    //    console.log(event.type)
-    //}
-
-
-
     handleclick(event){
-        //console.log(event.target.id)
-        //console.log(event.type)
-        //console.log(count)
-        if(event.type==="mousedown"){
-            //count=1
+
+        var down_a=this.state.down
+        if(event.type==="mousedown"&&down_a==="0"){
+            
+            this.setState(prevState => ({
+                down:"1"
+            }))
+
             var msstarta= event.target.id.split(",")
-            //console.log(event.target.id)
-            ///console.log(msstarta[0]+msstarta[1])
-            //console.log(parseInt(msstarta[0])-2)
             
             this.setState(prevState => ({
                 msstart:event.target.id,
-                msend:"none"//"-1,-1"
+                msend:"none"
             }))
         }
-        else if(event.type==="mouseup"){
-            //count=0
-            var msstarta= this.state.msstart.split(",")
-            var msenda= event.target.id.split(",")
-            //console.log(event.target.id)
-            
+        else if(event.type==="mouseover"){
 
-            
 
-            //console.log(x)
-            //var tabmap = new Array()
-            for(let i=parseInt(msstarta[0]);i<=parseInt(msenda[0]);i++){
-                for(let j=parseInt(msstarta[1]);j<=parseInt(msenda[1]);j++){
-                    //console.log(i+" "+j)
-                }
-            }
 
             this.setState(prevState => ({
                 msend:event.target.id
             }))
 
         }
+        else if(event.type==="mousedown"&&down_a==="1"){
 
+            this.setState(prevState => ({
+                down:"0"
+            }))
+
+            this.setState(prevState => ({
+                msstart:"none",
+                msend:"none"
+            }))
+            
+            var msstarta= this.state.msstart.split(",")
+            var msenda= event.target.id.split(",")
+            //console.log(event.target.id)
+
+            var region_a=this.state.regions
+
+            //var count = 0
+            
+            if(msstarta[0]<=msenda[0]&&msstarta[1]<=msenda[1]){
+                for(let i=parseInt(msstarta[0]);i<=parseInt(msenda[0]);i++){
+                    for(let j=parseInt(msstarta[1]);j<=parseInt(msenda[1]);j++){
+                        //if(region_a.find(e => e === (i+","+j))!==(i+","+j)){
+                            region_a.push(i+","+j)
+                            //count++
+                        //}
+                        //else if(region_a.find(e => e === (i+","+j))===(i+","+j)){
+                            
+                        //}
+                    }
+                }
+            }
+
+            else if(msstarta[0]>=msenda[0]&&msstarta[1]>=msenda[1]){
+                for(let i=parseInt(msenda[0]);i<=parseInt(msstarta[0]);i++){
+                    for(let j=parseInt(msenda[1]);j<=parseInt(msstarta[1]);j++){
+                        //if(region_a.find(e => e === (i+","+j))!==(i+","+j)){
+                            region_a.push(i+","+j)
+                            //count++
+                        //}
+                    }
+                }
+            }   
+
+            else if(msstarta[0]>msenda[0]&&msstarta[1]<msenda[1]){
+                for(let i=parseInt(msenda[0]);i<=parseInt(msstarta[0]);i++){
+                    for(let j=parseInt(msstarta[1]);j<=parseInt(msenda[1]);j++){
+                        //if(region_a.find(e => e === (i+","+j))!==(i+","+j)){
+                        region_a.push(i+","+j)
+                            //count++
+                        //}
+                    }
+                }
+            }
+
+            else if(msstarta[0]<msenda[0]&&msstarta[1]>msenda[1]){
+                for(let i=parseInt(msstarta[0]);i<=parseInt(msenda[0]);i++){
+                    for(let j=parseInt(msenda[1]);j<=parseInt(msstarta[1]);j++){
+                        //if(region_a.find(e => e === (i+","+j))!==(i+","+j)){
+                            region_a.push(i+","+j)
+                            //count++
+                        //}
+                    }
+                }
+            }
+
+            
+
+            for(let i = 0; i<region_a.length;i++){
+                for(let j = 0; j<region_a.length;j++){
+                    if(i!==j){
+                        if(region_a[i]===region_a[j]){
+
+                            region_a.splice(j,1)
+                            region_a.splice(i,1)
+                            
+                            //console.log("fuck")
+                        }
+                   }
+                }
+            }
+
+            console.log(region_a)
+
+            this.setState(prevState => ({
+                //regions:"0",
+                regions:region_a            
+            }))
+            
+            this.idtodate()
+            
+        }
 
 
 
     }
 
+    idtodate(){
+        var days = this.state.days
+        var times= this.state.times
+
+        var region_a=this.state.regions
+        var region_dates=[]
+        var temp=[]
+
+        for(let i=0;i<region_a.length;i++){
+            temp=region_a[i].split(",")
+            region_dates[i]=days[temp[0]]+" "+times[temp[1]]
+        }
+
+        //console.log(region_dates)
+        this.setState(prevState => ({
+            regions_dat:region_dates           
+        }))
+
+    }
+
+    //selected "grey"
+    Highlighted(id){
+
+        var region_a=this.state.regions
+
+        for(let i =0;i<region_a.length;i++){
+            if(id===region_a[i]){
+                return true
+            }
+        }
+
+        return false
+
+    }
+
+
+    //not slected "blue"
     isHighlighted(id) {
         var msstarta= this.state.msstart.split(",")
         var msenda= this.state.msend.split(",")
         ///console.log(msenda[0]+msenda[1])
         
 
-        var x = Math.abs(parseInt(msenda[0])-parseInt(msstarta[0]))
-        var y = Math.abs(parseInt(msenda[1])-parseInt(msstarta[1]))
+        //console.log(region_a.length)
+        
+        //console.log(region_a)
 
-        //console.log(x)
-        //var tabmap = new Array()
+
+
+
+
+
+        //diagonal right down
         for(let i=parseInt(msstarta[0]);i<=parseInt(msenda[0]);i++){
             for(let j=parseInt(msstarta[1]);j<=parseInt(msenda[1]);j++){
                 if(id===(i+","+j)) {
@@ -211,7 +324,26 @@ class TimeSlotPicker extends React.Component{
             }
         }
 
+        //diagonal left up 
         for(let i=parseInt(msenda[0]);i<=parseInt(msstarta[0]);i++){
+            for(let j=parseInt(msenda[1]);j<=parseInt(msstarta[1]);j++){
+                if(id===(i+","+j)) {
+                    return true
+                }
+            }
+        }
+
+        //diagonal left down
+        for(let i=parseInt(msenda[0]);i<=parseInt(msstarta[0]);i++){
+            for(let j=parseInt(msstarta[1]);j<=parseInt(msenda[1]);j++){
+                if(id===(i+","+j)) {
+                    return true
+                }
+            }
+        }
+
+        //diagonal right up
+        for(let i=parseInt(msstarta[0]);i<=parseInt(msenda[0]);i++){
             for(let j=parseInt(msenda[1]);j<=parseInt(msstarta[1]);j++){
                 if(id===(i+","+j)) {
                     return true
