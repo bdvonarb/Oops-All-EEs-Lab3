@@ -7,6 +7,7 @@ import NewPollModal from '../components/new-poll-modal'
 import {isloggedin} from '../components/auth'
 import Layout from '../components/layout'
 import swal from 'sweetalert'
+import { navigate } from 'gatsby-link'
 
 
 class PollListPage extends React.Component {
@@ -14,7 +15,8 @@ class PollListPage extends React.Component {
         super(props);
         this.state = {polls:[],modalShow:false}
 
-        this.deletePoll = this.deletePoll.bind(this);
+        this.editPoll = this.editPoll.bind(this)
+        this.deletePoll = this.deletePoll.bind(this)
         this.componentDidMount = this.componentDidMount.bind(this)
         this.updateList = this.updateList.bind(this)
         this.setModalShow =  this.setModalShow.bind(this)
@@ -35,6 +37,11 @@ class PollListPage extends React.Component {
                 this.updateList()
             }
         })
+    }
+
+    editPoll(editID) {
+        console.log(editID)
+        navigate('/poll-edit?id='+editID)
     }
 
     componentDidMount() {
@@ -99,7 +106,7 @@ class PollListPage extends React.Component {
                         <tbody>
                             {
                                 this.state.polls.map(poll => (
-                                    <PollTableRow key={poll.id} pollTitle={poll.title} pollAuthor={poll.author} pollID={poll.id} signedin={isloggedin()} deleteCallback={this.deletePoll}></PollTableRow>
+                                    <PollTableRow key={poll.id} pollTitle={poll.title} pollAuthor={poll.author} pollID={poll.id} signedin={isloggedin()} deleteCallback={this.deletePoll} editCallback={this.editPoll}></PollTableRow>
                                 ))
                             }
                         </tbody>

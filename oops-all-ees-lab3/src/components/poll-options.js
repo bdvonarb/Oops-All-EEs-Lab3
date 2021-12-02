@@ -20,7 +20,14 @@ class PollOptions extends React.Component {
         this.handleDateChange = this.handleDateChange.bind(this)
         this.handleTitle = this.handleTitle.bind(this)
         this.handleTimezone = this.handleTimezone.bind(this)
+        this.handleCheckbox = this.handleCheckbox.bind(this)
         this.submitForm = this.submitForm.bind(this)
+    }
+
+    updateState(state) {
+        this.setState(prevState => ({
+            ...state
+        }))
     }
 
     simpleChangeHandler(event) {
@@ -53,6 +60,12 @@ class PollOptions extends React.Component {
                 helpText: "<Error>Title cannot be empty"
             }))
         }
+    }
+
+    handleCheckbox(event) {
+        this.setState(prevState => ({
+            [event.target.name]:event.target.checked
+        }))
     }
 
     handleTimezone(event) {
@@ -99,7 +112,6 @@ class PollOptions extends React.Component {
                 vpp:this.state.vpp,
                 publish:this.state.publish
             })
-            navigate("/poll-list")
         } else {
             //at least one test failed
             console.log("fail" + error)
@@ -136,7 +148,7 @@ class PollOptions extends React.Component {
                                 <Form.Label style={{margin:"12px 0"}}>Publish:</Form.Label>
                             </Col>
                             <Col xs="auto">
-                                <Form.Check style={{margin:"12px 0"}} type="checkbox" value={this.state.publish} onChange={this.simpleChangeHandler}></Form.Check>
+                                <Form.Check style={{margin:"12px 0"}} type="checkbox" name="publish" checked={this.state.publish} onChange={this.handleCheckbox}></Form.Check>
                             </Col>
                             <Col xs="auto">
                                 <button type="button" className="btn btn-info" onClick={this.submitForm} style={{display:'inline-block',width:'90px',margin:"5px 0"}}>Save</button>

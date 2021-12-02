@@ -1,6 +1,4 @@
 import * as React from 'react'
-import "../styles/bootstrap.min.css"
-import '../styles/fa/css/all.css'
 import {isloggedin} from '../components/auth'
 import Layout from '../components/layout'
 import { navigate } from 'gatsby-link'
@@ -9,7 +7,7 @@ import getFirebase from '../../firebase'
 import swal from 'sweetalert'
 
 
-class PollListPage extends React.Component {
+class NewPollPage extends React.Component {
     constructor(props) {
         super(props);
         //should get title, startDate, endDate, and timezone from props.location.state
@@ -37,6 +35,7 @@ class PollListPage extends React.Component {
             
             return fdb.update(fdb.ref(database), updates)
         })
+        navigate("/poll-list")
     }
 
 
@@ -60,4 +59,4 @@ class PollListPage extends React.Component {
     
 }
 
-export default PollListPage
+export default NewPollPage
