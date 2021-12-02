@@ -24,6 +24,8 @@ class EditPollPage extends React.Component {
             id:props.location.search.slice(props.location.search.indexOf("?id=")+4)
         }
 
+        //console.log(props.location)
+
         this.PollOptions = React.createRef()
         this.getPoll = this.getPoll.bind(this)
         this.savePoll = this.savePoll.bind(this)
@@ -73,6 +75,14 @@ class EditPollPage extends React.Component {
             return fdb.update(fdb.ref(database), updates)
         })
         navigate("/poll-list")
+        swal("Poll Saved!", "Would you like to copy a link to your poll to share with participants?", "success", {buttons:["No Thanks!", "Copy Link"]})
+        .then((value) => {
+            if(value) {
+                const link = this.props.location.origin + "/poll-view?id=" + this.state.id
+                navigator.clipboard.writeText(link)
+                swal("Copied!",link,"success")
+            }
+        })
     }
 
 

@@ -22,11 +22,12 @@ class NewPollPage extends React.Component {
     newPoll (poll) {
         const lazyApp = import('firebase/app')
         const lazyDatabase = import('firebase/database')
+        var newPollKey
 
         Promise.all([lazyApp, lazyDatabase]).then(([f, fdb]) => {
             const database = fdb.getDatabase(getFirebase(f))
 
-            const newPollKey = fdb.push(fdb.child(fdb.ref(database), 'polls')).key
+            newPollKey = fdb.push(fdb.child(fdb.ref(database), 'polls')).key
 
             const pollData = {...poll, id:newPollKey}
 
@@ -36,6 +37,14 @@ class NewPollPage extends React.Component {
             return fdb.update(fdb.ref(database), updates)
         })
         navigate("/poll-list")
+        swal("Poll Saved!", "Would you like to copy a link to your poll to share with participants?", "success", {buttons:["No Thanks!", "Copy Link"]})
+        .then((value) => {
+            if(value) {
+                const link = this.props.location.origin + "/poll-view?id=" + newPollKey
+                navigator.clipboard.writeText(link)
+                swal("Copied!",link,"success")
+            }
+        })
     }
 
 
