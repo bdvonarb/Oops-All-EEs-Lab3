@@ -16,7 +16,7 @@ export const loginsystem = ({email, password}) => {
         console.log("success")
         setUser({
             email: 'admin',
-            name: 'administator',
+            name: 'administrator',
         })
         return true
     }
