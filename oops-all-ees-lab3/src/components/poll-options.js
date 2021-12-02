@@ -11,10 +11,12 @@ class PollOptions extends React.Component {
         super(props)
         //console.log(end);
         //this.state = {title: "", startDate: start.toJSON().slice(0,10), endDate: end.toJSON().slice(0,10), disabledate: false, timezone: "NaN", helpText: "Selected date range spans 7 days"}
-        this.state = {...props.state, helpText:"", disabled:props.view, fail:false, edit:props.edit}
+        this.state = {...props.state, helpText:"", view:props.view, fail:false, edit:props.edit}
         console.log(this.state)
 
-        this.saveCallback = props.saveCallback.bind(this)
+        if(props.saveCallback) {
+            this.saveCallback = props.saveCallback.bind(this)
+        }
 
         this.simpleChangeHandler = this.simpleChangeHandler.bind(this)
         this.handleDateChange = this.handleDateChange.bind(this)
@@ -134,7 +136,7 @@ class PollOptions extends React.Component {
     render() {
         return (
             <Form onSubmit={(event) => {event.preventDefault()}}>
-                <fieldset disabled={this.state.disabled}>
+                <fieldset disabled={this.state.view}>
                     <Col>
                         <Row className="mb-3">{/*this row contains poll title, publish, save, and cancel fields*/}
                             <Col xs="auto">
@@ -144,31 +146,33 @@ class PollOptions extends React.Component {
                                 <Form.Control type="text" size="lg" style={{display:"inline-block",width:"20em"}} value={this.state.title} onChange={this.handleTitle}/>
                             </Col>
                             <Col/> {/*This Col acts to separate the title field and the rest */}
-                            <Col xs="auto" style={{paddingRight:"0"}}>
-                                <Form.Label style={{margin:"12px 0"}}>Publish:</Form.Label>
-                            </Col>
-                            <Col xs="auto">
-                                <Form.Check style={{margin:"12px 0"}} type="checkbox" name="publish" checked={this.state.publish} onChange={this.handleCheckbox}></Form.Check>
-                            </Col>
-                            <Col xs="auto">
-                                <button type="button" className="btn btn-info" onClick={this.submitForm} style={{display:'inline-block',width:'90px',margin:"5px 0"}}>Save</button>
-                            </Col>
-                            <Col xs="auto">
-                                <button type="button" className="btn btn-danger" onClick={()=>{
-                                    var text = ""
-                                    if (this.state.edit) {
-                                        text = "Are you sure you want to discard your changes?"
-                                    } else {
-                                        text = "Are you sure you want to discard this poll?"
-                                    }
-                                    swal("Are you sure?", text, "warning", {buttons: ["Cancel", "Discard"], dangerMode:true})
-                                    .then((value) => {
-                                        if (value) {
-                                            navigate("/poll-list")
+                            {!this.state.view  && <>
+                                <Col xs="auto" style={{paddingRight:"0"}}>
+                                    <Form.Label style={{margin:"12px 0"}}>Publish:</Form.Label>
+                                </Col>
+                                <Col xs="auto">
+                                    <Form.Check style={{margin:"12px 0"}} type="checkbox" name="publish" checked={this.state.publish} onChange={this.handleCheckbox}></Form.Check>
+                                </Col>
+                                <Col xs="auto">
+                                    <button type="button" className="btn btn-info" onClick={this.submitForm} style={{display:'inline-block',width:'90px',margin:"5px 0"}}>Save</button>
+                                </Col>
+                                <Col xs="auto">
+                                    <button type="button" className="btn btn-danger" onClick={()=>{
+                                        var text = ""
+                                        if (this.state.edit) {
+                                            text = "Are you sure you want to discard your changes?"
+                                        } else {
+                                            text = "Are you sure you want to discard this poll?"
                                         }
-                                    })
-                                }} style={{display:'inline-block',width:'90px',margin:"5px 0"}}>Cancel</button>
-                            </Col>
+                                        swal("Are you sure?", text, "warning", {buttons: ["Cancel", "Discard"], dangerMode:true})
+                                        .then((value) => {
+                                            if (value) {
+                                                navigate("/poll-list")
+                                            }
+                                        })
+                                    }} style={{display:'inline-block',width:'90px',margin:"5px 0"}}>Cancel</button>
+                                </Col>
+                            </>}
                         </Row>
                         <Row>
                             <Col> {/*This column contains start date and end date pickers*/}

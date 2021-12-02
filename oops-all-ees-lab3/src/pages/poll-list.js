@@ -60,7 +60,9 @@ class PollListPage extends React.Component {
                 var newPolls = []
                 for(var key in data) {
                     //console.log(JSON.stringify(data[key]))
-                    newPolls.push(data[key])
+                    if(isloggedin() || data[key].publish) {
+                        newPolls.push(data[key])
+                    }
                 }
                 this.setState(prevState => ({
                     polls: newPolls

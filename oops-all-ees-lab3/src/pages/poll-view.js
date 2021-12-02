@@ -26,7 +26,6 @@ class EditPollPage extends React.Component {
 
         this.PollOptions = React.createRef()
         this.getPoll = this.getPoll.bind(this)
-        this.savePoll = this.savePoll.bind(this)
         this.componentDidMount = this.componentDidMount.bind(this)
     }
 
@@ -58,36 +57,19 @@ class EditPollPage extends React.Component {
         })
     }
 
-    savePoll (poll) {
-        const lazyApp = import('firebase/app')
-        const lazyDatabase = import('firebase/database')
-
-        Promise.all([lazyApp, lazyDatabase]).then(([f, fdb]) => {
-            const database = fdb.getDatabase(getFirebase(f))
-
-            const pollData = {...poll, id:this.state.id}
-
-            const updates = {}
-            updates['/polls/' + this.state.id] = pollData
-            
-            return fdb.update(fdb.ref(database), updates)
-        })
-        navigate("/poll-list")
-    }
-
 
     render() {
-        if(!isloggedin()) {
-            swal("You must be signed in to view this page",)
-            navigate("/log-in")
+        if(!isloggedin() && (this.state.title && !this.state.publish)) {
+            swal("This poll is not published and cannot be viewed",)
+            navigate("/poll-list")
             return null
         }
         //console.log(this.state)
         return (
-            <Layout pageTitle="Edit Poll: Oops All EEs Doodle">
+            <Layout pageTitle="View Poll: Oops All EEs Doodle">
             <main>
                 <div style={{backgroundColor:"#ffffff", borderRadius:"10px", border:"1px solid #000000", width:"90%", margin:"0 auto", padding:"10px"}}>
-                    <PollOptions state={this.state} saveCallback={this.savePoll} edit ref={this.PollOptions}></PollOptions>
+                    <PollOptions state={this.state} view ref={this.PollOptions}></PollOptions>
                 </div>
             </main>
             </Layout>
