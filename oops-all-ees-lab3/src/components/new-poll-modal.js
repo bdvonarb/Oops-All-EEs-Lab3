@@ -1,7 +1,9 @@
+import { navigate } from 'gatsby-link'
 import * as React from 'react'
 import {Modal, Form, Row, Col} from 'react-bootstrap'
 import '../styles/fa/css/all.css'
 import tzInts from './timezones.js'
+
 
 class NewPollModal extends React.Component {
     constructor(props) {
@@ -134,6 +136,14 @@ class NewPollModal extends React.Component {
         if(!error) {
             //success
             console.log("success")
+            navigate('/poll-new',{
+                state:{
+                    title: this.state.title,
+                    startDate: this.state.startDate,
+                    endDate: this.state.endDate,
+                    timezone: this.state.timezone,
+                },
+            })
         } else {
             //at least one test failed
             console.log("fail" + error)

@@ -14,7 +14,7 @@ const PollTableRow = ({ pollTitle, pollAuthor, pollID, signedin, deleteCallback,
                     <button type="button" className="btn btn-success" style={{marginLeft:'5px'}}>
                         <i className="far fa-edit"></i>
                     </button>
-                    <button type="button" onClick={ () => deleteCallback(pollID)} className="btn btn-danger" style={{marginLeft:'5px'}}>
+                    <button type="button" onClick={ () => deleteCallback(pollID, pollTitle)} className="btn btn-danger" style={{marginLeft:'5px'}}>
                         <i className="far fa-trash-alt"></i>
                     </button>
                 </>
