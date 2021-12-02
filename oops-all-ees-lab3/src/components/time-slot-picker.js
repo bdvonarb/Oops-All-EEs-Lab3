@@ -110,9 +110,17 @@ class TimeSlotPicker extends React.Component{
         
         //<th/> style={{position="absolute"}}
 
+        var hold = []
+        //hold = props.region_pass.split(" ")
         
+        //console.log(hold)
+        // region:[{names:[],cells:[]}]
+        this.state = {days:[...columnname], times:[...rowname], msstart:"none", msend:"none", regions:props.region_pass, down:"0", type:whatstat,selected_tim:[]}
 
-        this.state = {days:[...columnname], times:[...rowname], msstart:"none", msend:"none", regions:["1,2","1,3","1,4","2,4"], down:"0",regions_dat:[], type:whatstat,selected_tim:[], selections:[{name:"Jaxen",slot:"1,2"},{name:"Ben",slot:"2,4"}]}
+        if(props.regionSelectCallback && props.regionCreateCallback) {
+            this.regionCreateCallback = props.regionCreateCallback.bind(this)
+            this.regionSelectCallback = props.regionSelectCallback.bind(this)
+        }
 
         this.handleclick = this.handleclick.bind(this)
         this.isHighlighted = this.isHighlighted.bind(this)
@@ -154,7 +162,7 @@ class TimeSlotPicker extends React.Component{
                     down:"1"
                 }))
 
-                var msstarta= event.target.id.split(",")
+                //var msstarta= event.target.id.split(",")
                 
                 this.setState(prevState => ({
                     msstart:event.target.id,
@@ -181,24 +189,26 @@ class TimeSlotPicker extends React.Component{
                     msend:"none"
                 }))
                 
-                var msstarta= this.state.msstart.split(",")
-                var msenda= event.target.id.split(",")
+                var msstarta= this.state.msstart.split(",").map(val => parseInt(val))
+                var msenda= event.target.id.split(",").map(val => parseInt(val))
+
+                console.log(msstarta)
+                console.log(msenda)
                 //console.log(event.target.id)
 
-                var region_a=this.state.regions
+                var region_cells = []
+
+                var start = [Math.min(msstarta[0],msenda[0]), Math.min(msstarta[1],msenda[1])]
+                var end = [Math.max(msstarta[0],msenda[0]), Math.max(msstarta[1],msenda[1])]
 
                 //var count = 0
                 
-                if(msstarta[0]<=msenda[0]&&msstarta[1]<=msenda[1]){
+                /*if(msstarta[0]<=msenda[0]&&msstarta[1]<=msenda[1]){
                     for(let i=parseInt(msstarta[0]);i<=parseInt(msenda[0]);i++){
                         for(let j=parseInt(msstarta[1]);j<=parseInt(msenda[1]);j++){
-                            //if(region_a.find(e => e === (i+","+j))!==(i+","+j)){
-                                region_a.push(i+","+j)
-                                //count++
-                            //}
-                            //else if(region_a.find(e => e === (i+","+j))===(i+","+j)){
-                                
-                            //}
+                            console.log("1")
+                            region_cells.push(i+","+j)
+
                         }
                     }
                 }
@@ -206,10 +216,9 @@ class TimeSlotPicker extends React.Component{
                 else if(msstarta[0]>=msenda[0]&&msstarta[1]>=msenda[1]){
                     for(let i=parseInt(msenda[0]);i<=parseInt(msstarta[0]);i++){
                         for(let j=parseInt(msenda[1]);j<=parseInt(msstarta[1]);j++){
-                            //if(region_a.find(e => e === (i+","+j))!==(i+","+j)){
-                                region_a.push(i+","+j)
-                                //count++
-                            //}
+                            console.log("2")
+                            region_cells.push(i+","+j)
+
                         }
                     }
                 }   
@@ -217,10 +226,9 @@ class TimeSlotPicker extends React.Component{
                 else if(msstarta[0]>msenda[0]&&msstarta[1]<msenda[1]){
                     for(let i=parseInt(msenda[0]);i<=parseInt(msstarta[0]);i++){
                         for(let j=parseInt(msstarta[1]);j<=parseInt(msenda[1]);j++){
-                            //if(region_a.find(e => e === (i+","+j))!==(i+","+j)){
-                            region_a.push(i+","+j)
-                                //count++
-                            //}
+                            console.log("3")
+                            region_cells.push(i+","+j)
+
                         }
                     }
                 }
@@ -228,57 +236,85 @@ class TimeSlotPicker extends React.Component{
                 else if(msstarta[0]<msenda[0]&&msstarta[1]>msenda[1]){
                     for(let i=parseInt(msstarta[0]);i<=parseInt(msenda[0]);i++){
                         for(let j=parseInt(msenda[1]);j<=parseInt(msstarta[1]);j++){
-                            //if(region_a.find(e => e === (i+","+j))!==(i+","+j)){
-                                region_a.push(i+","+j)
-                                //count++
-                            //}
+                            console.log("4")
+                            region_cells.push(i+","+j)
+
+                        }
+                    }
+                }*/
+
+                for(let x = start[0]; x <= end[0]; x++) {
+                    for(let y = start[1]; y <= end[1]; y++) {
+                        region_cells.push(x+","+y)
+                    }
+                }
+
+                /*
+                var newregion = {names:[], cells:region_cells}
+                var newRegions = this.state.regions
+                var del = false
+                */
+
+                /*for(let i = 0; i<this.state.regions.length;i++){
+                    for(let k = 0; k<this.state.regions[i].cells.length;k++){
+                        for(let j = 0; j<region_cells.length;j++){
+                            if(this.state.regions[i].cells[k]===region_cells[j]){
+                                newRegions.splice(i)
+                                del = true
+                            }
+                        }
+                    }
+                }*/
+
+
+
+
+                //INSERT REGIONSELECTCALLBACK SHIT 
+                //console.log(region_cells)
+
+
+
+
+                this.regionCreateCallback(region_cells, this.state.days[0])
+
+                /*
+                if(!del){
+                    newRegions = {...newRegions, newregion}
+                }
+
+                this.setState(prevState => ({
+                    //regions:"0",
+                    regions:newRegions
+                }))
+                */
+                
+                //this.idtodate()
+                
+            }
+        }
+
+        else if(this.state.type===1){
+            var region_cells=this.state.regions
+            var selected_tim_a = []
+            var temp_che=-1
+            if(event.type==="mousedown"){
+
+                for(let j = 0; j<this.state.regions.length; j++){
+                    for(let i = 0; i<this.state.regions[j].cells.length; i++){
+                        if(event.target.id===this.state.regions[j].cells[i]){
+                            temp_che=j
                         }
                     }
                 }
 
-                
-
-                for(let i = 0; i<region_a.length;i++){
-                    for(let j = 0; j<region_a.length;j++){
-                        if(i!==j){
-                            if(region_a[i]===region_a[j]){
-
-                                region_a.splice(j,1)
-                                region_a.splice(i,1)
-                                
-                                //console.log("fuck")
-                            }
-                    }
-                    }
-                }
-
-                console.log(region_a)
-
-                this.setState(prevState => ({
-                    //regions:"0",
-                    regions:region_a            
-                }))
-                
-                this.idtodate()
-                
-            }
-        }
-        else if(this.state.type===1){
-            var region_a=this.state.regions
-            var selected_tim_a = []
-            var temp_che=0
-            if(event.type==="mousedown"){
-                for(let i = 0; i<region_a.length; i++){
-                    if(event.target.id===region_a[i]){
-                        temp_che=1
-                    }
-                }
-                if(temp_che===1){
-                    selected_tim_a.push(event.target.id)
+                if(temp_che>=0){
+                    selected_tim_a.push(...this.state.regions[temp_che].cells)
                     this.setState(prevState => ({
                         selected_tim:selected_tim_a            
                     }))
                     console.log(selected_tim_a)
+
+                    this.regionSelectCallback(temp_che)
                 }
             }
         }
@@ -286,32 +322,32 @@ class TimeSlotPicker extends React.Component{
     }
 
     idtodate(){
-        var days = this.state.days
+        /*var days = this.state.days
         var times= this.state.times
 
-        var region_a=this.state.regions
+        var region_cells=this.state.regions
         var region_dates=[]
         var temp=[]
 
-        for(let i=0;i<region_a.length;i++){
-            temp=region_a[i].split(",")
+        for(let i=0;i<region_cells.length;i++){
+            temp=region_cells[i].split(",")
             region_dates[i]=days[temp[0]]+" "+times[temp[1]]
         }
 
         console.log(region_dates)
         this.setState(prevState => ({
             regions_dat:region_dates           
-        }))
+        }))*/
 
     }
 
     //selected "grey"
     Highlighted(id){
  
-        var region_a=this.state.regions
+        var region=this.state.regions
 
-        for(let i =0;i<region_a.length;i++){
-            if(id===region_a[i]){
+        for(let i =0;i<this.state.regions.length;i++){
+            if(this.state.regions[i].cells.some((cell_id) => cell_id===id)){
                 return true
             }
         }
@@ -324,11 +360,12 @@ class TimeSlotPicker extends React.Component{
     //not slected "blue"
     isHighlighted(id) {
 
+
         if(this.state.type===0){
             var msstarta= this.state.msstart.split(",")
             var msenda= this.state.msend.split(",")
 
-            //console.log(region_a)
+            
 
             //diagonal right down
             for(let i=parseInt(msstarta[0]);i<=parseInt(msenda[0]);i++){
@@ -376,10 +413,13 @@ class TimeSlotPicker extends React.Component{
 
         if(this.state.type===1){
 
-            if(id===selected_tim_a[0]){
-                return true
+            for(let i =0; i<selected_tim_a.length;i++){
+                if(id===selected_tim_a[i]){
+                    return true
 
+                }
             }
+
         }
 
         return false
