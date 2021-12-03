@@ -14,8 +14,6 @@ class NewPollPage extends React.Component {
         super(props);
         //should get title, startDate, endDate, and timezone from props.location.state
 
-        delete props.location.state.saveCallback
-
         this.state = {...props.location.state, location:"", description:"", vps:1,vpp:1,publish:false,regions:[],modalShow:false, tmpRegion:{startTime:"", endTime:"", startDay:"", endDay:""}}
 
         this.newPoll = this.newPoll.bind(this)
