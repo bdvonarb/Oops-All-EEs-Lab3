@@ -8,6 +8,7 @@ import swal from 'sweetalert'
 import TimeSlotPicker from '../components/time-slot-picker'
 import PollVoteModal from '../components/poll-vote-modal'
 
+const isBrowser = typeof window !== "undefined"
 
 class EditPollPage extends React.Component {
     constructor(props) {
