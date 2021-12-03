@@ -9,6 +9,8 @@ import TimeSlotPicker from "../components/time-slot-picker"
 import TimeslotModal from '../components/create-timeslot-modal'
 
 
+const isBrowser = typeof window !== "undefined"
+
 class NewPollPage extends React.Component {
     constructor(props) {
         super(props);
@@ -136,7 +138,9 @@ class NewPollPage extends React.Component {
     render() {
         if(!isloggedin()) {
             swal("You must be signed in to view this page")
-            navigate("/log-in")
+            if(isBrowser) {
+                navigate("/log-in")
+            }
             return null
         }
         return (

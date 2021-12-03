@@ -144,7 +144,9 @@ class EditPollPage extends React.Component {
     render() {
         if(!isloggedin() && (this.state.title && !this.state.publish)) {
             swal("This poll is not published and cannot be viewed",)
-            navigate("/poll-list")
+            if(isBrowser) {
+                navigate("/log-in")
+            }
             return null
         }
         if(!this.state.gotPoll) {

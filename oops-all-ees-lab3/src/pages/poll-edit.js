@@ -188,7 +188,9 @@ class EditPollPage extends React.Component {
     render() {
         if(!isloggedin()) {
             swal("You must be signed in to view this page",)
-            navigate("/log-in")
+            if(isBrowser) {
+                navigate("/log-in")
+            }
             return null
         }
 
