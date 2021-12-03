@@ -45,7 +45,7 @@ class NewPollPage extends React.Component {
         swal("Poll Saved!", "Would you like to copy a link to your poll to share with participants?", "success", {buttons:["No Thanks!", "Copy Link"]})
         .then((value) => {
             if(value) {
-                const link = this.props.location.origin + "/poll-view?id=" + newPollKey
+                const link = this.props.location.origin + "/poll-view/?id=" + newPollKey
                 navigator.clipboard.writeText(link)
                 swal("Copied!",link,"success")
             }
