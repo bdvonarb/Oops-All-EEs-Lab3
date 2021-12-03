@@ -17,6 +17,7 @@ class TimeSlotPicker extends React.Component{
 
         this.idtodate = this.idtodate.bind(this)
         this.state = TimeSlotPicker.setup(props)
+        this.getName = this.getName.bind(this)
     }
 
     static setup(props) {
@@ -160,6 +161,11 @@ class TimeSlotPicker extends React.Component{
         return retText
     }
 
+    static dayIndexToDayString(index, startDate) {
+        var date = new Date(Date.parse(startDate) + index*24*60*60*1000)
+        return date.toLocaleString('en-US', {timeZone: "UTC", day: "2-digit", month: "short", year: "numeric", weekday: "short"})
+    }
+
     handleclick(event){
         if(this.state.type===0){
             var down_a=this.state.down
@@ -241,7 +247,7 @@ class TimeSlotPicker extends React.Component{
                     }))
                     console.log(selected_tim_a)
 
-                    this.regionSelectCallback(temp_che)
+                    this.props.regionSelectCallback(temp_che)
                 }
             }
         }
@@ -379,6 +385,19 @@ class TimeSlotPicker extends React.Component{
         }
     }
 
+    getName(id) {
+        for(let i =0;i<this.state.regions.length;i++){
+            if(this.state.regions[i].cells.some((cell_id) => cell_id===id)){
+                if(this.state.regions[i].names) {
+                    return this.state.regions[i].names.toString()
+                } else {
+                    return "Available"
+                }
+            }
+        }
+        return ""
+    }
+
     tablerow(time, timeindex){
         return (
             <tr key={-timeindex}>
@@ -388,7 +407,8 @@ class TimeSlotPicker extends React.Component{
                 {
                     this.state.days.map((day,dayindex) => (
                         <td id={dayindex + "," + timeindex} key={dayindex + "," + timeindex} style={{fontSize:"60%", textAlign:"center", userSelect:"none", backgroundColor:this.highlightColor(dayindex + "," + timeindex)}} onMouseDown={this.handleclick} onMouseOver={this.handleclick}>
-                            {day+ " " + time}
+                            {day+ " " + time}<br/>
+                            {this.state.type?this.getName(dayindex + "," + timeindex):""}
                         </td>
                     ))
                 }

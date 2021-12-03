@@ -18,7 +18,7 @@ class TimeslotModal extends React.Component {
     static getDerivedStateFromProps(nextProps, prevState) {
         if(nextProps.startTime !== prevState.startTime || nextProps.endTime !== prevState.endTime || nextProps.startDay !== prevState.startDay || nextProps.endDay !== prevState.endDay) {
             console.log(nextProps)
-            return {startTime:nextProps.startTime, endTime:nextProps.endTime, slots:1, length:(nextProps.endTime - nextProps.startTime + 1), startDay:nextProps.startDay, endDay:nextProps.endDay, slotText:TimeslotModal.generateSlotsText(prevState.startTime, 1, 1)}
+            return {startTime:nextProps.startTime, endTime:nextProps.endTime, slots:1, length:(nextProps.endTime - nextProps.startTime + 1), startDay:nextProps.startDay, endDay:nextProps.endDay, slotText:TimeslotModal.generateSlotsText(nextProps.startTime, 1, 1)}
         } else {
             return null
         }
@@ -83,7 +83,7 @@ class TimeslotModal extends React.Component {
                     <Form onSubmit={this.submitForm}>
                         <Col>
                             <Row>
-                                <p className="text-muted">Spans {this.state.endDay - this.state.startDay + 1} days</p>
+                                <p className="text-muted">Selection spans {this.state.endDay - this.state.startDay + 1} days</p>
                             </Row>
                             <Row>
                                 <Col xs="auto">
