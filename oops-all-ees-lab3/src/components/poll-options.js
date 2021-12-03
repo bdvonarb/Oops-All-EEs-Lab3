@@ -17,6 +17,9 @@ class PollOptions extends React.Component {
         if(props.saveCallback) {
             this.saveCallback = props.saveCallback.bind(this)
         }
+        if(props.dateCallback) {
+            this.dateCallback = props.dateCallback.bind(this)
+        }
 
         this.simpleChangeHandler = this.simpleChangeHandler.bind(this)
         this.handleDateChange = this.handleDateChange.bind(this)
@@ -44,11 +47,18 @@ class PollOptions extends React.Component {
             this.setState(prevState => ({
                 startDate: event.target.value
             }))
+            if(this.dateCallback) {
+                this.dateCallback(event.target.value, this.state.endDate)
+            }
         } else if (event.target.name === "endDate") {
             this.setState(prevState => ({
                 endDate: event.target.value
             }))
+            if(this.dateCallback) {
+                this.dateCallback(this.state.startDate, event.target.value)
+            }
         }
+        
     }
 
     handleTitle(event){
@@ -198,9 +208,8 @@ class PollOptions extends React.Component {
                                     <Col xs="auto">
                                         <Form.Label style={{padding:"12px 0"}}>Timezone:</Form.Label>
                                     </Col>
-                                    <Col/>
-                                    <Col xs="auto">
-                                        <Form.Select style={{padding:"12px 5px", width:"200px",height:"46px"}} value={this.state.timezone} onChange={this.handleTimezone}>
+                                    <Col>
+                                        <Form.Select style={{padding:"12px 5px", width:"100%", maxWidth:"250px",height:"46px", float:"right"}} value={this.state.timezone} onChange={this.handleTimezone}>
                                             {tzInts.map((tz, index) => (
                                                 <option value={tz.value} key={index+1}>{tz.label}</option>
                                             ))}

@@ -6,13 +6,30 @@ import '../styles/fa/css/all.css'
 
 class TimeSlotPicker extends React.Component{
     //const  = ({startDate, endDate, selectCallback, children}) => 
+    constructor(props) {
+        super(props)
+        this.handleclick = this.handleclick.bind(this)
+        this.isHighlighted = this.isHighlighted.bind(this)
 
-    constructor(props){
-        super(props);
+        this.Highlighted = this.Highlighted.bind(this)
+
+        this.selHighlighted = this.selHighlighted.bind(this)
+
+        this.idtodate = this.idtodate.bind(this)
+        this.state = TimeSlotPicker.setup(props)
+    }
+
+    static setup(props) {
         var whatstat = props.type;
-        var sdate = new Date(props.startDate);
-        var edate = new Date(props.endDate);
-        var polllength = (Math.abs(props.startDate-props.endDate)/(1000*60*60*24))+1;
+        var sdate = new Date(Date.parse(props.startDate));
+        var edate = new Date(Date.parse(props.endDate));
+
+        //console.log(sdate)
+        //console.log(edate)
+
+        //console.log(props)
+
+        var polllength = (Math.abs(sdate-edate)/(1000*60*60*24))+1;
         const columnname = []
    
         const months = ["Jan","Feb","Mar","Apr","May","June","July","Aug","Sept","Oct","Nov","Dec"];
@@ -115,45 +132,35 @@ class TimeSlotPicker extends React.Component{
         
         //console.log(hold)
         // region:[{names:[],cells:[]}]
-        this.state = {days:[...columnname], times:[...rowname], msstart:"none", msend:"none", regions:props.region_pass, down:"0", type:whatstat,selected_tim:[]}
+        return {days:[...columnname], times:[...rowname], msstart:"none", msend:"none", regions:props.regions, down:"0", type:whatstat,selected_tim:[]}
 
-        if(props.regionSelectCallback && props.regionCreateCallback) {
+        /*if(props.regionSelectCallback && props.regionCreateCallback) {
             this.regionCreateCallback = props.regionCreateCallback.bind(this)
             this.regionSelectCallback = props.regionSelectCallback.bind(this)
-        }
+        }*/
 
-        this.handleclick = this.handleclick.bind(this)
-        this.isHighlighted = this.isHighlighted.bind(this)
-
-        this.Highlighted = this.Highlighted.bind(this)
-
-        this.selHighlighted = this.selHighlighted.bind(this)
-
-        this.idtodate = this.idtodate.bind(this)
+        
     }
 
-    
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if(nextProps.startDate === prevState.startDate && nextProps.endDate == prevState.endDate) {
+            return TimeSlotPicker.setup(nextProps)
+        } else {
+            return null
+        }
+    }
 
-    tablerow(time, timeindex){
-        return (
-            <tr>
-                <th style={{userSelect:"none"}}>
-                    {time}
-                </th>
-                {
-                    this.state.days.map((day,dayindex) => (
-                        <td id={dayindex + "," + timeindex} key={dayindex + "," + timeindex} style={{fontSize:"60%", textAlign:"center", userSelect:"none", backgroundColor:this.selHighlighted(dayindex+","+timeindex)?"#b3b32d":this.isHighlighted(dayindex+","+timeindex)?"#4287f5":this.Highlighted(dayindex+","+timeindex)?"#64748f":"white" }} onMouseDown={this.handleclick} onMouseOver={this.handleclick}>
-                            {day+ " " + time}
-                        </td>
-                    ))
-                }
-
-            </tr>
-        )
+    static timeIndexToTimeString(index) {
+        const hours = ["0","1","2","3","4","5","6","7","8","9","10","11","12","1","2","3","4","5","6","7","8","9","10","11","12"]
+        const minutes = ["00", "15", "30", "45"]
+        var retText = hours[6+Math.floor(index/4)]
+        retText += ":" 
+        retText += minutes[index%4] 
+        retText += index<12?" am":" pm"
+        return retText
     }
 
     handleclick(event){
-
         if(this.state.type===0){
             var down_a=this.state.down
             if(event.type==="mousedown"&&down_a==="0"){
@@ -192,8 +199,8 @@ class TimeSlotPicker extends React.Component{
                 var msstarta= this.state.msstart.split(",").map(val => parseInt(val))
                 var msenda= event.target.id.split(",").map(val => parseInt(val))
 
-                console.log(msstarta)
-                console.log(msenda)
+                //console.log(msstarta)
+                //console.log(msenda)
                 //console.log(event.target.id)
 
                 var region_cells = []
@@ -201,95 +208,15 @@ class TimeSlotPicker extends React.Component{
                 var start = [Math.min(msstarta[0],msenda[0]), Math.min(msstarta[1],msenda[1])]
                 var end = [Math.max(msstarta[0],msenda[0]), Math.max(msstarta[1],msenda[1])]
 
-                //var count = 0
-                
-                /*if(msstarta[0]<=msenda[0]&&msstarta[1]<=msenda[1]){
-                    for(let i=parseInt(msstarta[0]);i<=parseInt(msenda[0]);i++){
-                        for(let j=parseInt(msstarta[1]);j<=parseInt(msenda[1]);j++){
-                            console.log("1")
-                            region_cells.push(i+","+j)
-
-                        }
-                    }
-                }
-
-                else if(msstarta[0]>=msenda[0]&&msstarta[1]>=msenda[1]){
-                    for(let i=parseInt(msenda[0]);i<=parseInt(msstarta[0]);i++){
-                        for(let j=parseInt(msenda[1]);j<=parseInt(msstarta[1]);j++){
-                            console.log("2")
-                            region_cells.push(i+","+j)
-
-                        }
-                    }
-                }   
-
-                else if(msstarta[0]>msenda[0]&&msstarta[1]<msenda[1]){
-                    for(let i=parseInt(msenda[0]);i<=parseInt(msstarta[0]);i++){
-                        for(let j=parseInt(msstarta[1]);j<=parseInt(msenda[1]);j++){
-                            console.log("3")
-                            region_cells.push(i+","+j)
-
-                        }
-                    }
-                }
-
-                else if(msstarta[0]<msenda[0]&&msstarta[1]>msenda[1]){
-                    for(let i=parseInt(msstarta[0]);i<=parseInt(msenda[0]);i++){
-                        for(let j=parseInt(msenda[1]);j<=parseInt(msstarta[1]);j++){
-                            console.log("4")
-                            region_cells.push(i+","+j)
-
-                        }
-                    }
-                }*/
-
                 for(let x = start[0]; x <= end[0]; x++) {
                     for(let y = start[1]; y <= end[1]; y++) {
                         region_cells.push(x+","+y)
                     }
                 }
 
-                /*
-                var newregion = {names:[], cells:region_cells}
-                var newRegions = this.state.regions
-                var del = false
-                */
+               
+                this.props.regionCreateCallback(region_cells, this.state.days[0])
 
-                /*for(let i = 0; i<this.state.regions.length;i++){
-                    for(let k = 0; k<this.state.regions[i].cells.length;k++){
-                        for(let j = 0; j<region_cells.length;j++){
-                            if(this.state.regions[i].cells[k]===region_cells[j]){
-                                newRegions.splice(i)
-                                del = true
-                            }
-                        }
-                    }
-                }*/
-
-
-
-
-                //INSERT REGIONSELECTCALLBACK SHIT 
-                //console.log(region_cells)
-
-
-
-
-                this.regionCreateCallback(region_cells, this.state.days[0])
-
-                /*
-                if(!del){
-                    newRegions = {...newRegions, newregion}
-                }
-
-                this.setState(prevState => ({
-                    //regions:"0",
-                    regions:newRegions
-                }))
-                */
-                
-                //this.idtodate()
-                
             }
         }
 
@@ -426,19 +353,63 @@ class TimeSlotPicker extends React.Component{
 
     }
 
+    highlightColor(id){
+
+        if(this.state.type===0) {
+            var msstarta= this.state.msstart.split(",").map(val => parseInt(val))
+            var msenda= this.state.msend.split(",").map(val => parseInt(val))
+
+            var start = [Math.min(msstarta[0],msenda[0]), Math.min(msstarta[1],msenda[1])]
+            var end = [Math.max(msstarta[0],msenda[0]), Math.max(msstarta[1],msenda[1])]
+
+            for(let x = start[0]; x <= end[0]; x++) {
+                for(let y = start[1]; y <= end[1]; y++) {
+                    if((x+","+y) === id) {
+                        return "#4287f5"
+                    }
+                }
+            }
+        }
+
+        const colors = ["#fbb4ae","#b3cde3","#ccebc5","#decbe4","#fed9a6","#ffffcc","#e5d8bd","#fddaec"]
+        for(let i =0;i<this.state.regions.length;i++){
+            if(this.state.regions[i].cells.some((cell_id) => cell_id===id)){
+                return colors[i%8]
+            }
+        }
+    }
+
+    tablerow(time, timeindex){
+        return (
+            <tr key={-timeindex}>
+                <th style={{userSelect:"none"}}>
+                    {time}
+                </th>
+                {
+                    this.state.days.map((day,dayindex) => (
+                        <td id={dayindex + "," + timeindex} key={dayindex + "," + timeindex} style={{fontSize:"60%", textAlign:"center", userSelect:"none", backgroundColor:this.highlightColor(dayindex + "," + timeindex)}} onMouseDown={this.handleclick} onMouseOver={this.handleclick}>
+                            {day+ " " + time}
+                        </td>
+                    ))
+                }
+
+            </tr>
+        )
+    }
+
     render() {
         return (
  
             <table className="table table-striped table-bordered table-sm" 
-            style={{display:"block",width:"900px",height:"500px",overflowY:"scroll",overflowX:"scroll"}}>
+            style={{display:"block", width:"100%",overflowY:"scroll",overflowX:"scroll"}}>
                 
-                <thead>
+                <thead style={{width:"100%"}}>
                     <tr>
-                        <th/>
+                        <th style={{minWidth:"80px", textAlign:"center", userSelect:"none"}}/>
                         
                         {
                             this.state.days.map((day,index) => (
-                                <th key={index} style={{minWidth:"200px", textAlign:"center", userSelect:"none"}}>
+                                <th key={index} style={{minWidth:"150px", width:"500px", textAlign:"center", userSelect:"none"}}>
                                     {day}
                                 </th>
                             ))
