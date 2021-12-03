@@ -1,6 +1,3 @@
-import * as React from "react"
-import { navigate } from "gatsby" 
-
 export const Window = () => typeof window !=="undefined"
 
 export const getUser = () =>
@@ -8,38 +5,29 @@ export const getUser = () =>
     ? JSON.parse(window.localStorage.getItem("OAEEsuser"))
     : {}
 
- const setUser = User => 
-      window.localStorage.setItem("OAEEsuser", JSON.stringify(User))
+const setUser = User => 
+    window.localStorage.setItem("OAEEsuser", JSON.stringify(User))
 
 export const loginsystem = ({email, password}) => {
-    console.log("hi")
-    console.log(email)
-    console.log(password)
     if (email === 'admin@oopsallees.com' && password === 'guest') {
-        console.log("success")
-        return setUser(
-            {
+        setUser({
             email: 'admin',
-            name: 'administator',
-        }
-        )
+            name: 'administrator',
+        })
+        return true
     }
     else {
-        console.log("fail")
         return false
     }
 }
 
 export const isloggedin = () => {
-    console.log("checking")
     const User = getUser()
-    console.log(User)
      
     return !!User.email
 }
 
 export const logout = callback => {
     setUser({})
-    console.log("logged out")
     callback()
   }

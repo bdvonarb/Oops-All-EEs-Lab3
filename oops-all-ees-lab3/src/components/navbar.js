@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Link,navigate } from 'gatsby'
+import { navigate } from 'gatsby'
 import '../styles/fa/css/all.css'
 import '../styles/bootstrap.min.css'
 import { isloggedin, logout } from './auth'
@@ -24,7 +24,7 @@ const NavBar = ({children}) => {
                     <a className="nav-link" href="/poll-list">Poll List</a>
                     </li>
                     <li className="nav-item">
-                    <a className="nav-link" href="/log-in"onClick={event=>{if(isloggedin()){event.preventDefault();logout(()=>navigate('/log-in'))}}}>{isloggedin()?"Sign Out":"Sign In"}</a>
+                    <a className="nav-link" href="/log-in"onClick={event=>{if(isloggedin()){event.preventDefault();logout(()=>setTimeout(() => navigate('/log-in'), 50))}}}>{isloggedin()?"Sign Out":"Sign In"}</a>
                     </li>
                 </ul>
                 
